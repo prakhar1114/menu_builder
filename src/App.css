@@ -1,0 +1,26 @@
+body {
+  background-color: skyblue;
+  font-family: "Reddit Mono", monospace;
+  /* font-optical-sizing: auto;
+  font-weight: <weight>;
+  font-style: normal; */
+}
+
+.food-item-component * {
+  height: 10%;
+}
+
+.food-item {
+  margin-right: 0.5%;
+  width: 90%;
+}
+
+.meal-title {
+  margin-bottom: 0.5%;
+}
+
+.meal-component {
+  border: solid white;
+  width: 350px;
+  padding: 0.2%;
+}
