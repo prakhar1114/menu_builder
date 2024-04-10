@@ -3,12 +3,29 @@ import foodItems from "./FoodItems";
 import "./App.css";
 import { ReactSearchAutocomplete } from "react-search-autocomplete";
 
-function menuBoard() {}
-
-function SingleMeal() {
-  const [title, setTitle] = useState("Lunch");
+function MenuBoard() {
+  const title = "Lunch";
   const [mealItems, setmealItems] = useState(foodItems);
   const [foodItemList, setFoodItems] = useState(foodItems);
+
+  return (
+    <SingleMeal
+      title={title}
+      mealItems={mealItems}
+      setmealItems={setmealItems}
+      foodItemList={foodItemList}
+      setFoodItems={setFoodItems}
+    />
+  );
+}
+
+function SingleMeal({
+  title,
+  mealItems,
+  setmealItems,
+  foodItemList,
+  setFoodItems,
+}) {
   function clearItem(index) {
     setmealItems(mealItems.filter((_, idx) => idx !== index));
   }
@@ -66,7 +83,7 @@ function FoodItem({ index, foodName, clearItem, handleInputChange }) {
   );
 }
 
-export default SingleMeal;
+export default MenuBoard;
 
 function SelectFoodItem({
   foodItemList,
@@ -75,6 +92,7 @@ function SelectFoodItem({
   setmealItems,
 }) {
   const [currentStr, setCurrentStr] = useState("");
+  const [autocompleteKey, setAutocompleteKey] = useState(0);
 
   const handleOnSearch = (string, results) => {
     console.log(string, results);
@@ -86,8 +104,14 @@ function SelectFoodItem({
   };
 
   const handleOnSelect = (item) => {
-    setmealItems([...mealItems, item.name]);
-    console.log(item);
+    if (!mealItems.includes(item.name)) {
+      setmealItems([...mealItems, item.name]);
+      console.log(item);
+    } else {
+      console.log(item.name + " exists");
+    }
+    setCurrentStr("");
+    setAutocompleteKey((prevKey) => prevKey + 1);
   };
 
   const updateList = () => {
@@ -123,8 +147,9 @@ function SelectFoodItem({
   return (
     <div className="add-items">
       <ReactSearchAutocomplete
+        key={autocompleteKey}
         items={items}
-        // inputSearchString={"Pizza"}
+        // inputSearchString={currentStr}
         onSearch={handleOnSearch}
         onHover={handleOnHover}
         onSelect={handleOnSelect}
