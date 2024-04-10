@@ -24,3 +24,29 @@ body {
   width: 350px;
   padding: 0.2%;
 }
+
+/* .searchitems {
+  height: 10%;
+  clearIconMargin: '3px 14px 0 0',
+  searchIconMargin: '0 0 0 16px'
+} */
+
+.add-items {
+  display: flex; /* This turns on Flexbox for the container */
+  align-items: center; /* This vertically centers the children */
+  gap: 10px; /* This adds some space between the children */
+}
+
+.plus-button {
+  background-color: #007bff; /* Example background color */
+  color: white; /* Text color */
+  border: none; /* Removes the border */
+  padding: 5px 10px; /* Adds some padding */
+  border-radius: 5px; /* Rounds the corners */
+  cursor: pointer; /* Changes the cursor to indicate it's clickable */
+}
+
+/* Style for hover state */
+.plus-button:hover {
+  background-color: #0056b3;
+}
