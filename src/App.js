@@ -5,10 +5,18 @@ import "./App.css";
 import { ReactSearchAutocomplete } from "react-search-autocomplete";
 
 function MenuBoard() {
-  const meal_type = "Lunch";
   const [fullMenu, setFullMenu] = useState(weeklyMenu);
   const [foodItemList, setFoodItems] = useState(foodItems);
-  const day = "Monday";
+  const days = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
+  ];
+  const meal_types = ["Breakfast", "Lunch", "Dinner"];
 
   const updateMenu = (fullMenu, setFullMenu, day, meal_type, items) => {
     let updatedFullMenu = { ...fullMenu };
@@ -18,7 +26,29 @@ function MenuBoard() {
 
   return (
     <>
-      <SingleMeal
+      {days.map((day) => (
+        <div className="day-full-menu">
+          <div className="day-name">{day}</div>
+          <div className="all-meals">
+            {meal_types.map((meal_type) => (
+              <span className="single-meal">
+                {/* {day}, {meal_type} */}
+                <SingleMeal
+                  title={meal_type}
+                  mealItems={fullMenu[day][meal_type]}
+                  setmealItems={(items) =>
+                    updateMenu(fullMenu, setFullMenu, day, meal_type, items)
+                  }
+                  foodItemList={foodItemList}
+                  setFoodItems={setFoodItems}
+                />
+              </span>
+            ))}
+          </div>
+        </div>
+      ))}
+
+      {/* <SingleMeal
         title={meal_type}
         mealItems={fullMenu[day][meal_type]}
         setmealItems={(items) =>
@@ -26,7 +56,7 @@ function MenuBoard() {
         }
         foodItemList={foodItemList}
         setFoodItems={setFoodItems}
-      />
+      /> */}
     </>
   );
 }
