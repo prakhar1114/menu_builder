@@ -1,5 +1,5 @@
 body {
-  background-color: skyblue;
+  background-color: white;
   font-family: "Reddit Mono", monospace;
   /* font-optical-sizing: auto;
   font-weight: <weight>;
@@ -10,9 +10,10 @@ body {
   height: 10%;
 }
 
+
 .food-item {
   margin-right: 0.5%;
-  width: 90%;
+  width: 80%;
 }
 
 .meal-title {
@@ -20,9 +21,11 @@ body {
 }
 
 .meal-component {
-  border: solid white;
-  width: 350px;
+  border: solid black;
+  width: 200px;
   padding: 0.2%;
+  padding-bottom: 2%;
+  margin: 1%
 }
 
 /* .searchitems {

@@ -1,21 +1,33 @@
 import React, { useState } from "react";
 import foodItems from "./FoodItems";
+import weeklyMenu from "./WeeklyMenu";
 import "./App.css";
 import { ReactSearchAutocomplete } from "react-search-autocomplete";
 
 function MenuBoard() {
-  const title = "Lunch";
-  const [mealItems, setmealItems] = useState(foodItems);
+  const meal_type = "Lunch";
+  const [fullMenu, setFullMenu] = useState(weeklyMenu);
   const [foodItemList, setFoodItems] = useState(foodItems);
+  const day = "Monday";
+
+  const updateMenu = (fullMenu, setFullMenu, day, meal_type, items) => {
+    let updatedFullMenu = { ...fullMenu };
+    updatedFullMenu[day][meal_type] = items;
+    setFullMenu(updatedFullMenu);
+  };
 
   return (
-    <SingleMeal
-      title={title}
-      mealItems={mealItems}
-      setmealItems={setmealItems}
-      foodItemList={foodItemList}
-      setFoodItems={setFoodItems}
-    />
+    <>
+      <SingleMeal
+        title={meal_type}
+        mealItems={fullMenu[day][meal_type]}
+        setmealItems={(items) =>
+          updateMenu(fullMenu, setFullMenu, day, meal_type, items)
+        }
+        foodItemList={foodItemList}
+        setFoodItems={setFoodItems}
+      />
+    </>
   );
 }
 
@@ -53,7 +65,6 @@ function SingleMeal({
             handleInputChange={handleInputChange}
           />
         ))}
-        {/* <FoodItem foodName={""} /> */}
         <SelectFoodItem
           foodItemList={foodItemList}
           updatedFoodItemList={setFoodItems}
@@ -112,6 +123,7 @@ function SelectFoodItem({
     }
     setCurrentStr("");
     setAutocompleteKey((prevKey) => prevKey + 1);
+    handleOnClear();
   };
 
   const updateList = () => {
@@ -156,11 +168,13 @@ function SelectFoodItem({
         onFocus={handleOnFocus}
         onClear={handleOnClear}
         styling={{
-          zIndex: 4,
+          // zIndex: 4,
           borderRadius: "",
           height: "10%",
           padding: 0,
-          margin: 0,
+          margin: "1%",
+          border: "0.5px solid black",
+          width: "250px",
         }} // To display it on top of the search box below
         className="food-item"
         autoFocus
