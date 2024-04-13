@@ -1,4 +1,28 @@
-const foodItems = ["Pizza", "Burger", "Noodles", "Paneer Bhurji", "Aloo Matar", "Paratha"];
-
+const foodItems = [
+  "Aloo matar",
+  "Aloo paratha",
+  "Barbatti",
+  "Biryani",
+  "Cabbage",
+  "Cheela",
+  "Chhole",
+  "Cooker daal",
+  "Curd",
+  "Dal fry",
+  "Fool gobhi",
+  "Loki",
+  "Methi paratha",
+  "Noodles",
+  "Paneer bhurji",
+  "Parval",
+  "Poha",
+  "Pumpkin",
+  "Raita",
+  "Rajma",
+  "Rice",
+  "Roti",
+  "Sandwich",
+  "Vermicelli",
+];
 
 export default foodItems;
