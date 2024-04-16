@@ -6,8 +6,6 @@ import { useNavigate } from 'react-router-dom';
 
 
 const supabase = createClient(
-  "https://simggheqbtucnadaqtsh.supabase.co", 
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNpbWdnaGVxYnR1Y25hZGFxdHNoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTMwMzczMTQsImV4cCI6MjAyODYxMzMxNH0.hNu8JoYlIXR1frZY8KJwFmoaETL_opFgKqs6TvVvtLE"
 );
 
 function Login() {
