@@ -1,13 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import foodItems from "../FoodItems";
 import weeklyMenu from "../WeeklyMenu";
 import "../App.css";
 import { ReactSearchAutocomplete } from "react-search-autocomplete";
-// import { GoogleLogin } from '@react-oauth/google';
+import { useContext } from 'react';
+import { AuthContext } from "./login";
 
 
 function MenuBoard() {
-  const [fullMenu, setFullMenu] = useState(weeklyMenu);
+  const {
+    session, setSession, supabase, isLoggedIn, setIsLoggedIn
+  } = useContext(AuthContext)
+
+  const [queryset, setQueryset] = useState([]);
+
+  const [fullMenu, setFullMenu] = useState(null);
+  // const [fullMenu, setFullMenu] = useState(null);
   const [foodItemList, setFoodItems] = useState(foodItems);
   const days = [
     "Monday",
@@ -19,6 +27,74 @@ function MenuBoard() {
     "Sunday",
   ];
   const meal_types = ["Breakfast", "Lunch", "Dinner"];
+  const email = session.user.email
+
+
+  useEffect(() => {
+    getMenu();
+  }, []);
+
+  useEffect(() => {
+    updateMenuTable();
+  }, [fullMenu]);
+
+  async function updateMenuTable() {
+
+
+    if (fullMenu !== null && fullMenu !==  weeklyMenu) {
+
+      console.log("Updating Menu Table")
+      console.log(email)
+      console.log(fullMenu)
+
+      const { data, error } = await supabase
+      .from('user_week_menu')
+      .update({ menu: fullMenu })
+      .eq('email', email)
+      .select()
+    }
+  }
+
+  async function createUser(email, menu) {
+    console.log("Creating user")
+    const { data, error } = await supabase
+    .from('user_week_menu')
+    .insert([
+      { email: email, menu: menu },
+    ])
+    .select()
+  }
+
+  async function getMenu() {
+    try {
+      console.log("Attempting to fetch menu")
+
+      const { data: fetched_menu, error } = await supabase
+      .from("user_week_menu")
+      .select("menu")
+      .eq('email', email);
+              
+      // console.log(email);
+      console.log(fetched_menu);
+      setQueryset(fetched_menu);
+
+      if (fetched_menu.length === 1) {
+        setFullMenu(fetched_menu[0].menu)
+        console.log("Menu fetched and set")
+      } else if (fetched_menu.length === 0) {
+        setFullMenu(weeklyMenu)
+        createUser(email, weeklyMenu)
+        console.log("Default Menu Set")
+      } else {
+        throw new Error("This shouldnt have veen reached");
+      }
+
+    } catch (err) {
+      console.error('Unexpected error:', err);
+      throw new Error("This shouldnt have veen reached");
+    }
+  }
+
 
   const updateMenu = (fullMenu, setFullMenu, day, meal_type, items) => {
     let updatedFullMenu = { ...fullMenu };
@@ -26,41 +102,36 @@ function MenuBoard() {
     setFullMenu(updatedFullMenu);
   };
 
-  return (
-    <>
-      {days.map((day) => (
-        <div className="day-full-menu">
-          <div className="day-name">{day}</div>
-          <div className="all-meals">
-            {meal_types.map((meal_type) => (
-              <span className="single-meal">
-                {/* {day}, {meal_type} */}
-                <SingleMeal
-                  title={meal_type}
-                  mealItems={fullMenu[day][meal_type]}
-                  setmealItems={(items) =>
-                    updateMenu(fullMenu, setFullMenu, day, meal_type, items)
-                  }
-                  foodItemList={foodItemList}
-                  setFoodItems={setFoodItems}
-                />
-              </span>
-            ))}
+  if (!fullMenu) {
+    return <div>Loading...</div>;
+  }
+  else {
+    return (
+      <>
+        {days.map((day) => (
+          <div className="day-full-menu">
+            <div className="day-name">{day}</div>
+            <div className="all-meals">
+              {meal_types.map((meal_type) => (
+                <span className="single-meal">
+                  {/* {day}, {meal_type} */}
+                  <SingleMeal
+                    title={meal_type}
+                    mealItems={fullMenu[day][meal_type]}
+                    setmealItems={(items) =>
+                      updateMenu(fullMenu, setFullMenu, day, meal_type, items)
+                    }
+                    foodItemList={foodItemList}
+                    setFoodItems={setFoodItems}
+                  />
+                </span>
+              ))}
+            </div>
           </div>
-        </div>
-      ))}
-      {/* <div className="google-login">
-        <GoogleLogin
-          onSuccess={(credentialResponse) => {
-            console.log(credentialResponse);
-          }}
-          onError={() => {
-            console.log("Login Failed");
-          }}
-        />
-      </div> */}
-    </>
-  );
+        ))}
+      </>
+    );
+  }
 }
 
 function SingleMeal({
@@ -136,18 +207,18 @@ function SelectFoodItem({
   const [autocompleteKey, setAutocompleteKey] = useState(0);
 
   const handleOnSearch = (string, results) => {
-    console.log(string, results);
+    // console.log(string, results);
     setCurrentStr(string);
   };
 
   const handleOnHover = (result) => {
-    console.log(result);
+    // console.log(result);
   };
 
   const handleOnSelect = (item) => {
     if (!mealItems.includes(item.name)) {
       setmealItems([...mealItems, item.name]);
-      console.log(item);
+      // console.log(item);
     } else {
       console.log(item.name + " exists");
     }
@@ -167,11 +238,11 @@ function SelectFoodItem({
   };
 
   const handleOnFocus = () => {
-    console.log("Focused");
+    // console.log("Focused");
   };
 
   const handleOnClear = () => {
-    console.log("Cleared");
+    // console.log("Cleared");
   };
 
   const formatResult = (item) => {

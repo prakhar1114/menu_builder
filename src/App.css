@@ -103,3 +103,9 @@ body {
 .App {
   text-align: center;
 }
+
+.go-to-menu {
+  margin: 2%;
+  padding: 0.5%;
+  font-size: 20px;
+}
