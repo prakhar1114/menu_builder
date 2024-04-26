@@ -5,6 +5,7 @@ import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { useNavigate } from "react-router-dom";
 import { createContext } from "react";
 import MenuBoard from "./menuBoard";
+import "../App.css";
 
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
 const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY;
@@ -42,25 +43,19 @@ function Login() {
 
   if (!session) {
     return (
-      <Auth
-        supabaseClient={supabase}
-        appearance={{ theme: ThemeSupa }}
-        providers={["google"]}
-      />
+      <div className='login'>
+        <Auth
+          supabaseClient={supabase}
+          appearance={{ theme: ThemeSupa }}
+          providers={["google"]}
+        />
+      </div>
     );
   } else {
     return (
-      <>
-        <AuthContext.Provider
-          value={{ session, setSession, supabase, isLoggedIn, setIsLoggedIn }}
-        >
-          {/* <div>{session.user.email.split('@')[0]} you are logged in!</div>
-        <button className="go-to-menu" onClick={() => navigate('/menu')} >
-          Go to Menu
-        </button> */}
+        <AuthContext.Provider value={{ session, setSession, supabase, isLoggedIn, setIsLoggedIn }}>
           <MenuBoard />
         </AuthContext.Provider>
-      </>
     );
   }
 }

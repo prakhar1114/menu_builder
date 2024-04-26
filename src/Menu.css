@@ -1,0 +1,86 @@
+body {
+    background-color: #282c34;
+    color: white;
+}
+
+* {
+    text-align: center;
+}
+
+.meal-title {
+    margin-bottom: 0.5%;
+}
+
+.food-item-component {
+    height: 10%;
+    flex-direction: row;
+    display: flex;
+}
+
+.food-item {
+    /* margin-right: 0%; */
+    /* width: 90%; */
+    flex: 9;
+    background-color: #282c34;
+    color: white;
+    /* border-radius: 5px; */
+}
+
+.x-button {
+    flex: 1;
+    cursor: pointer; 
+    border-radius: 5px;
+}
+
+.plus-button {
+    flex: 1;
+    border-radius: 5px;
+    background-color: #007bff;
+    cursor: pointer;
+    color: white;
+}
+
+.plus-button:hover {
+    background-color: #0056b3;
+  }
+
+.food-item-list {
+    flex-direction: column;
+    display: flex;
+}
+
+.all-meals {
+    flex-direction: row;
+    display: flex;
+    justify-content: center;
+    /* border: 0.5px solid black; */
+}
+
+.single-meal {
+    /* padding: 0.1%; */
+    /* margin: 1%; */
+    margin-top: 0.05%;
+    /* margin-right: 1%; */
+    /* margin-left: 1%; */
+    /* border: 0.5px solid green; */
+    flex: 1;
+    min-width: 100px;
+    max-width: 300px;
+    margin-left: 30px;
+    margin-right: 30px;
+}
+
+.meal-component {
+    border: solid black;
+}
+
+.day-name {
+    /* padding: 0.1%; */
+    margin-left: 1%;
+    font-weight: bold; 
+}
+
+.day-full-menu {
+    /* border: 0.5px solid black; */
+    margin: 0.1%;
+}

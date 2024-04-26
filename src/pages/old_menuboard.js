@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import foodItems from "../FoodItems";
 import weeklyMenu from "../WeeklyMenu";
-import "../Menu.css";
+import "../App.css";
 import { ReactSearchAutocomplete } from "react-search-autocomplete";
 import { useContext } from "react";
 import { AuthContext } from "./login";
 
 function MenuBoard() {
-
-  const { session, setSession, supabase, isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
+  const { session, setSession, supabase, isLoggedIn, setIsLoggedIn } =
+    useContext(AuthContext);
 
   const [queryset, setQueryset] = useState([]);
 
@@ -24,11 +24,7 @@ function MenuBoard() {
     "Saturday",
     "Sunday",
   ];
-  const meal_types = [
-    "Breakfast",
-    "Lunch",
-    "Dinner"
-  ];
+  const meal_types = ["Breakfast", "Lunch", "Dinner"];
   const email = session.user.email;
 
   useEffect(() => {
@@ -45,28 +41,20 @@ function MenuBoard() {
       console.log(email);
       console.log(fullMenu);
 
-      try {
-        const { data, error } = await supabase
+      const { data, error } = await supabase
         .from("user_week_menu")
         .update({ menu: fullMenu })
         .eq("email", email)
         .select();
-      } catch (err) {
-        console.error('Error with Supabase operation:', err.message)
-      }
     }
   }
 
   async function createUser(email, menu) {
     console.log("Creating user");
-    try {
-      const { data, error } = await supabase
+    const { data, error } = await supabase
       .from("user_week_menu")
       .insert([{ email: email, menu: menu }])
       .select();
-    } catch (err) {
-      console.error('Error with Supabase operation:', err.message)
-    }
   }
 
   async function getMenu() {
@@ -235,7 +223,6 @@ function SelectFoodItem({
     } else {
       console.log("food item already exists");
     }
-    setCurrentStr("");
   };
 
   const handleOnFocus = () => {
@@ -259,11 +246,11 @@ function SelectFoodItem({
   var items = foodItemList.map((food, i) => ({ id: i, name: food }));
   // console.log(items)
   return (
-    <div className="food-item-component">
+    <div className="add-items">
       <ReactSearchAutocomplete
         key={autocompleteKey}
         items={items}
-        inputSearchString={currentStr}
+        // inputSearchString={currentStr}
         onSearch={handleOnSearch}
         onHover={handleOnHover}
         onSelect={handleOnSelect}
@@ -274,11 +261,9 @@ function SelectFoodItem({
           borderRadius: "",
           height: "10%",
           padding: 0,
-          margin: "0%",
+          margin: "1%",
           border: "0.5px solid black",
-          backgroundColor: "#3c424e",
-          color: "white",
-          // width: "250px",
+          width: "250px",
         }} // To display it on top of the search box below
         className="food-item"
         autoFocus
@@ -291,63 +276,6 @@ function SelectFoodItem({
       )}
     </div>
   );
-}
-
-export function MenuBoardOffline() {
-
-  const [fullMenu, setFullMenu] = useState(weeklyMenu);
-  const [foodItemList, setFoodItems] = useState(foodItems);
-
-  const days = [
-    "Monday",
-    // "Tuesday",
-    // "Wednesday",
-    // "Thursday",
-    // "Friday",
-    // "Saturday",
-    // "Sunday",
-  ];
-
-  const meal_types = [
-    "Breakfast",
-    "Lunch",
-    "Dinner"
-  ];
-
-  const updateMenu = (fullMenu, setFullMenu, day, meal_type, items) => {
-    let updatedFullMenu = { ...fullMenu };
-    updatedFullMenu[day][meal_type] = items;
-    setFullMenu(updatedFullMenu);
-  };
-
-  if (!fullMenu) {
-    return <div>Loading...</div>;
-  } else {
-    return (
-      <>
-        {days.map((day) => (
-          <div className="day-full-menu">
-            <div className="day-name">{day}</div>
-            <div className="all-meals">
-              {meal_types.map((meal_type) => (
-                <span className="single-meal">
-                  <SingleMeal
-                    title={meal_type}
-                    mealItems={fullMenu[day][meal_type]}
-                    setmealItems={(items) =>
-                      updateMenu(fullMenu, setFullMenu, day, meal_type, items)
-                    }
-                    foodItemList={foodItemList}
-                    setFoodItems={setFoodItems}
-                  />
-                </span>
-              ))}
-            </div>
-          </div>
-        ))}
-      </>
-    );
-  }
 }
 
 export default MenuBoard;
