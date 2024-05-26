@@ -36,4 +36,12 @@ const weeklyMenu = {
     },
   };
 
-  export default weeklyMenu;
+  export const tabularData = Object.entries(weeklyMenu).map(([day, meals]) => ({
+      Day: day,
+      Breakfast: meals.Breakfast.join(", "),
+      Lunch: meals.Lunch.join(", "),
+      Dinner: meals.Dinner.join(", "),
+  }));
+
+
+export default weeklyMenu;

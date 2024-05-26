@@ -1,0 +1,54 @@
+.Table {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  min-height: 100vh;
+  margin: 0;
+  padding: 20px;
+  /* background-color: #f4f4f4; */
+}
+
+table {
+  border-collapse: collapse;
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 20px; /* Space between the table and buttons */
+}
+
+th, td {
+  border: 1px solid #000;
+  padding: 8px;
+  text-align: center;
+}
+
+th {
+  background-color: #007bff;
+  color: white;
+}
+
+td {
+  background-color: #fff;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center; /* Centers buttons horizontally */
+  width: 100%;
+}
+
+.save-btn, .add-btn {
+  padding: 10px 20px;
+  font-size: 2rem;
+  cursor: pointer;
+  margin: 0 10px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  background-color: #007bff;
+}
+
+.add-btn {
+  background-color: #28a745;
+}

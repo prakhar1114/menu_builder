@@ -271,13 +271,13 @@ function SelectFoodItem({
         onClear={handleOnClear}
         styling={{
           // zIndex: 4,
-          borderRadius: "",
+          // borderRadius: "",
           height: "10%",
           padding: 0,
           margin: "0%",
           border: "0.5px solid black",
-          backgroundColor: "#3c424e",
-          color: "white",
+          backgroundColor: "inherit",
+          color: "inherit",
           // width: "250px",
         }} // To display it on top of the search box below
         className="food-item"
@@ -293,6 +293,23 @@ function SelectFoodItem({
   );
 }
 
+function MealStyles(meal_type) {
+  const style = {};
+
+  if (meal_type === 'Lunch') {
+    style.backgroundColor = 'yellow';
+    style.color = 'red';
+  } else if (meal_type === 'Breakfast') {
+    style.backgroundColor = 'orange';
+    style.color = 'yellow'
+  } else if (meal_type === 'Dinner') {
+    style.color = 'white';
+    style.backgroundColor = 'black';
+  }
+
+  return style
+}
+
 export function MenuBoardOffline() {
 
   const [fullMenu, setFullMenu] = useState(weeklyMenu);
@@ -300,12 +317,12 @@ export function MenuBoardOffline() {
 
   const days = [
     "Monday",
-    // "Tuesday",
-    // "Wednesday",
-    // "Thursday",
-    // "Friday",
-    // "Saturday",
-    // "Sunday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
   ];
 
   const meal_types = [
@@ -327,19 +344,20 @@ export function MenuBoardOffline() {
       <>
         {days.map((day) => (
           <div className="day-full-menu">
-            <div className="day-name">{day}</div>
+            {/* <div className="day-name">{day}</div> */}
             <div className="all-meals">
+              <span className="row-title-day">{day}</span>
               {meal_types.map((meal_type) => (
-                <span className="single-meal">
-                  <SingleMeal
-                    title={meal_type}
-                    mealItems={fullMenu[day][meal_type]}
-                    setmealItems={(items) =>
-                      updateMenu(fullMenu, setFullMenu, day, meal_type, items)
-                    }
-                    foodItemList={foodItemList}
-                    setFoodItems={setFoodItems}
-                  />
+                <span className="single-meal" style={MealStyles(meal_type)}>
+                    <SingleMeal
+                      title={meal_type}
+                      mealItems={fullMenu[day][meal_type]}
+                      setmealItems={(items) =>
+                        updateMenu(fullMenu, setFullMenu, day, meal_type, items)
+                      }
+                      foodItemList={foodItemList}
+                      setFoodItems={setFoodItems}
+                    />
                 </span>
               ))}
             </div>
