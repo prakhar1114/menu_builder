@@ -15,6 +15,8 @@ table {
   font-size: 2rem;
   color: #333;
   margin-bottom: 20px; /* Space between the table and buttons */
+  table-layout: auto;
+  width: auto;
 }
 
 th, td {
@@ -51,4 +53,40 @@ td {
 
 .add-btn {
   background-color: #28a745;
+}
+
+
+input[type="text"] {
+  width: 100%; /* Full width of the cell */
+  padding: 6px 10px; /* Slightly smaller padding to fit nicely */
+  border: none;
+  font-size: inherit; /* Inherits font-size from the table */
+  text-align: center; /* Center text inside the input */
+  background-color: transparent; /* Maintains the cell's background */
+  color: inherit; /* Inherits text color from the table */
+  border-radius: 4px; /* Optional: adds slight rounding to inputs */
+  text-overflow:  ellipsis;
+}
+
+.meal-input {
+  width: 100%; /* Full width of the cell */
+  padding: 6px 10px; /* Slightly smaller padding to fit nicely */
+  border: none;
+  font-size: inherit; /* Inherits font-size from the table */
+  text-align: center; /* Center text inside the input */
+  background-color: transparent; /* Maintains the cell's background */
+  color: inherit; /* Inherits text color from the table */
+  border-radius: 4px; /* Optional: adds slight rounding to inputs */
+  text-overflow:  ellipsis;
+}
+
+.meal-input-focus {
+  width: auto; /* Full width of the cell */
+  padding: 6px 10px; /* Slightly smaller padding to fit nicely */
+  border: none;
+  font-size: inherit; /* Inherits font-size from the table */
+  text-align: center; /* Center text inside the input */
+  background-color: transparent; /* Maintains the cell's background */
+  color: inherit; /* Inherits text color from the table */
+  border-radius: 4px; /* Optional: adds slight rounding to inputs */
 }
