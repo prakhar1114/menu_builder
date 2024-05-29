@@ -40,6 +40,17 @@ td {
   width: 100%;
 }
 
+.search-container {
+  display: flex;
+  justify-content: center; /* Centers buttons horizontally */
+  width: 100%;
+  color: #333;
+}
+
+.search-items {
+  border: 0.5px solid black;
+}
+
 .save-btn, .add-btn {
   padding: 10px 20px;
   font-size: 2rem;
@@ -53,6 +64,13 @@ td {
 
 .add-btn {
   background-color: #28a745;
+}
+
+.search-items {
+  width: 100%; /* Full width of the cell */
+  padding: 6px 10px; /* Slightly smaller padding to fit nicely */  
+  font-size: 2rem;
+  background-color: #fff;
 }
 
 
