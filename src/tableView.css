@@ -51,7 +51,7 @@ td {
   border: 0.5px solid black;
 }
 
-.save-btn, .add-btn {
+.save-btn, .add-btn, .done-btn {
   padding: 10px 20px;
   font-size: 2rem;
   cursor: pointer;
@@ -64,6 +64,10 @@ td {
 
 .add-btn {
   background-color: #28a745;
+}
+
+.done-btn {
+  background-color: orange;
 }
 
 .search-items {

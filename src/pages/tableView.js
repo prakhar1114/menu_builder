@@ -5,6 +5,37 @@ import { tabularData } from "../WeeklyMenu";
 import "../tableView.css";
 import foodItems from "../FoodItems";
 import Fuse from 'fuse.js';
+import Modal from 'react-modal';
+import StoreAuth from "../AuthStore";
+import { useStoreState } from "pullstate";
+import LoginElement from "../loginComponent";
+import AuthButton from "../AuthButton";
+
+
+const customStyles = {
+  content: {
+    position: 'relative',
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    maxWidth: '20%',
+    paddingLeft: '5%',
+    paddingRight: '5%',
+    paddingTop: '5%',
+    paddingBottom: '5%',
+    // maxHeight: '60%',
+    // marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    fontSize: 'inherit', 
+    color: 'white', /* Inherits text color from the table */
+    backgroundColor: '#282c34',
+    // overflow: 'hidden',
+  },
+  overlay: {
+    // backgroundColor: 'inherit'
+  }
+};
 
 
 function TableView() {
@@ -18,11 +49,18 @@ function TableView() {
     })
   );
 
+  const { isLoggedIn } = useStoreState(StoreAuth, (s) => ({
+    isLoggedIn: s.isLoggedIn,
+  }));
+  // const isLoggedIn = false
   const [seachResults, setSearchResults] = useState([])
   const [userMenu, setUserMenu] = useState(tabularData);
   const [mealSelectedArray, setMealSelected] = useState(defaultMealState);
-  const [currentRowIndex, setCurrentRowIndex] = useState(-1)
-  const [mealTime, setMealTime] = useState("")
+  const [currentRowIndex, setCurrentRowIndex] = useState(0)
+  const [mealTime, setMealTime] = useState("Breakfast")
+  const [modalIsOpen, setIsOpen] = useState(false);
+
+  Modal.setAppElement('#root');
 
   const options = {
     includeScore: true, // Include the score in the result
@@ -63,6 +101,7 @@ function TableView() {
     setUserMenu(updatedMenu);
   };
 
+  // clicking from list
   const appendFoodItem = (item) => {
     console.log("I am clicked")
     const updatedMenu = [...userMenu];
@@ -77,10 +116,50 @@ function TableView() {
     toggleMealSelected(currentRowIndex, mealTime, true)
   }
 
-  const saveToDB = () => {
-    toggleMealSelected(currentRowIndex, mealTime, false)
-    console.log("Trying to Save to DB")
+  // Add Next Item
+  const appendComma = () => {
+    console.log('Lets try to append comma')
   }
+
+  // save button
+  const saveToDB = () => {
+    toggleMealSelected(currentRowIndex, mealTime, false);
+    // TODO clear extra commas
+    // TODO modal to login to save, attempt to fetch existing credentials
+
+    if (isLoggedIn) {
+      // TODO save to DB
+      console.log("Trying to Save to DB");
+
+    } else {
+      // TODO show modal to login
+      setIsOpen(true);
+    
+    }
+  }
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function afterOpenModal() {
+    // references are now sync'd and can be accessed.
+    // subtitle.style.color = '#f00';
+
+    console.log("now the modal is open, now what?")
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
+  function handleLogin() {
+    setIsOpen(true);
+  }
+  function handleLogout() {
+    setIsOpen(true);
+  }
+
 
   const mealList = ["Breakfast", "Lunch", "Dinner"];
 
@@ -127,7 +206,18 @@ function TableView() {
       >
         Save
       </button>
-      <button className="add-btn">Add Next Item</button>
+      <button 
+        className="add-btn"
+        onClick={appendComma}
+      >
+        Add Next Item
+      </button>
+      <button 
+      className="done-btn"
+      onClick={()=> toggleMealSelected(currentRowIndex, mealTime, false)}
+      >
+        Done
+      </button>
     </div>
     <div className="search-container">
       {seachResults.length > 0 && (
@@ -146,6 +236,18 @@ function TableView() {
           )}
 
     </div>
+    <LoginModal
+        modalIsOpen={modalIsOpen}
+        afterOpenModal={afterOpenModal}
+        closeModal={closeModal}
+        customStyles={customStyles}
+      >
+    </LoginModal>
+    <AuthButton
+      isLoggedIn={isLoggedIn}
+      handleLogin={handleLogin}
+      handleLogout={handleLogout}
+            />
 </div>
   );
 }
@@ -180,4 +282,24 @@ function SingleMeal({
     )
   }
 
+}
+
+
+function LoginModal({
+  modalIsOpen,
+  afterOpenModal,
+  closeModal,
+  customStyles,
+}) {
+  return (
+    <Modal
+    isOpen={modalIsOpen}
+    onAfterOpen={afterOpenModal}
+    onRequestClose={closeModal}
+    style={customStyles}
+    contentLabel="Example Modal"
+  >
+      <LoginElement/>
+    </Modal>
+  )
 }

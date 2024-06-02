@@ -4,6 +4,10 @@ import Login from "./pages/login";
 import Success from "./pages/success";
 import { MenuBoardOffline } from "./pages/menuBoard";
 import TableView from "./pages/tableView";
+import { createContext } from "react";
+
+
+// export const AuthContextMain = createContext(null);
 
 function App() {
   return (
