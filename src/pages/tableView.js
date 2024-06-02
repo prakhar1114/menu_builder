@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { AuthContextMain } from "../App";
 // import foodItems from "../FoodItems";
 // import weeklyMenu from "../WeeklyMenu";
 import { tabularData } from "../WeeklyMenu";
@@ -40,6 +41,8 @@ const customStyles = {
 
 function TableView() {
 
+  const { session, setSession, supabase, isLoggedIn, setIsLoggedIn } = useContext(AuthContextMain);
+
   const defaultMealState = tabularData.map(
     (val) => ({
       Day: val.Day,
@@ -49,9 +52,9 @@ function TableView() {
     })
   );
 
-  const { isLoggedIn } = useStoreState(StoreAuth, (s) => ({
-    isLoggedIn: s.isLoggedIn,
-  }));
+  // const { isLoggedIn } = useStoreState(StoreAuth, (s) => ({
+  //   isLoggedIn: s.isLoggedIn,
+  // }));
   // const isLoggedIn = false
   const [seachResults, setSearchResults] = useState([])
   const [userMenu, setUserMenu] = useState(tabularData);
@@ -68,6 +71,46 @@ function TableView() {
     threshold: 0.5 // Threshold for matching, with 0 being a perfect match and 1 matching nothing.
   };
   const fuse = new Fuse(foodItems, options);
+
+  useEffect(() => {
+    console.log("I ran")
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        console.log("Updating login state, place 3")
+        console.log(session)
+        setSession(session);
+        setIsLoggedIn(true);
+
+        StoreAuth.update((store) => {
+          store.session = session;
+          store.supabase = supabase;
+          store.isLoggedIn = true;
+        });
+      }
+
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+
+      if (session) {
+        console.log("Updating login state, place 4")
+        console.log(session)
+        setSession(session);
+        setIsLoggedIn(true);
+  
+        StoreAuth.update((store) => {
+          store.session = session;
+          store.supabase = supabase;
+          store.isLoggedIn = true;
+        });
+      }
+
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
 
   const toggleMealSelected = (index, field, value) => {
@@ -244,10 +287,9 @@ function TableView() {
       >
     </LoginModal>
     <AuthButton
-      isLoggedIn={isLoggedIn}
       handleLogin={handleLogin}
       handleLogout={handleLogout}
-            />
+    />
 </div>
   );
 }
@@ -299,7 +341,13 @@ function LoginModal({
     style={customStyles}
     contentLabel="Example Modal"
   >
-      <LoginElement/>
+    <LoginElement/>
+      <button 
+        className="modal-close-btn"
+        onClick={closeModal}
+      >
+        X
+      </button>
     </Modal>
   )
 }

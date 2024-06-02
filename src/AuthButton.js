@@ -1,46 +1,21 @@
 import StoreAuth from "./AuthStore";
 import { useStoreState } from "pullstate";
-import { useEffect, useState } from "react";
+
+import React, { useState, useEffect, useContext } from "react";
+import { AuthContextMain } from "./App";
 
 
-function AuthButton({ isLoggedIn, handleLogin, handleLogout }) {
+function AuthButton({handleLogin, handleLogout }) {
 
-// const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-// useEffect(() => {
-
-//     const { login_status } = useStoreState(StoreAuth, (s) => ({
-//         login_status: s.isLoggedIn,
-//         }));
-
-//     setIsLoggedIn(login_status);
-
-// }, [isLoggedIn]);
-
+    const { session, setSession, supabase, isLoggedIn, setIsLoggedIn } = useContext(AuthContextMain);
 
   return (
-    <button
+    <button className='auth-btn'
       onClick={isLoggedIn ? handleLogout : handleLogin}
-      style={buttonStyle}
     >
       {isLoggedIn ? "Logout" : "Login"}
     </button>
   );
 }
-
-// Inline CSS for the button
-const buttonStyle = {
-  position: "fixed",
-  right: "20px",
-  top: "20px",
-  padding: "10px 20px",
-  background: "blue",
-  color: "white",
-  border: "none",
-  borderRadius: "5px",
-  cursor: "pointer",
-  fontSize: "2rem",
-  margin: "0 10px",
-};
 
 export default AuthButton;

@@ -51,7 +51,7 @@ td {
   border: 0.5px solid black;
 }
 
-.save-btn, .add-btn, .done-btn {
+.save-btn, .add-btn, .done-btn, .modal-close-btn, .auth-btn {
   padding: 10px 20px;
   font-size: 2rem;
   cursor: pointer;
@@ -75,6 +75,12 @@ td {
   padding: 6px 10px; /* Slightly smaller padding to fit nicely */  
   font-size: 2rem;
   background-color: #fff;
+}
+
+.modal-close-btn, .auth-btn {
+  position: fixed;
+  right: 20px;
+  top: 20px;
 }
 
 

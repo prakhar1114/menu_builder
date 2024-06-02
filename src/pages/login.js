@@ -17,7 +17,6 @@ export const AuthContext = createContext(null);
 function Login() {
   const [session, setSession] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const navigate = useNavigate();
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
