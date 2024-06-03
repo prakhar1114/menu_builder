@@ -4,7 +4,7 @@ import Login from "./pages/login";
 import { useEffect, useState, createContext } from "react";
 import Success from "./pages/success";
 import { MenuBoardOffline } from "./pages/menuBoard";
-import TodaysMeals from "./pages/todaysMeals";
+import MealView from "./pages/todaysMeals";
 import TableView from "./pages/tableView";
 import { createClient } from "@supabase/supabase-js";
 import StoreAuth from "./AuthStore";
@@ -72,7 +72,7 @@ function App() {
             <Route path="/success" element={<Success />}/>
             <Route path="/menu" element={<MenuBoardOffline />}/>
             <Route path="/menu-table-view" element={<TableView />}/>
-            <Route path="/todays-meals" element={<TodaysMeals />}/>
+            <Route path="/todays-meals" element={<MealView />}/>
             {/* <Route path="*" element={<Navigate to={currentPage}/>}/> */}
           </Routes>
         </Router>
