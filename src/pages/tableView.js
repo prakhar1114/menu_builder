@@ -11,6 +11,7 @@ import StoreAuth from "../AuthStore";
 import { useStoreState } from "pullstate";
 import LoginElement from "../loginComponent";
 import AuthButton from "../AuthButton";
+import { useCheckLogin } from "../loginComponent";
 
 
 const customStyles = {
@@ -41,7 +42,11 @@ const customStyles = {
 
 function TableView() {
 
-  const { session, setSession, supabase, isLoggedIn, setIsLoggedIn } = useContext(AuthContextMain);
+  const { session, setSession, supabase, isLoggedIn, setIsLoggedIn, currentPage, setCurrentPage } = useContext(AuthContextMain);
+
+  setCurrentPage('http://localhost:3000/menu-table-view')
+  console.log(`Currently on ${currentPage}`)
+  useCheckLogin();
 
   const defaultMealState = tabularData.map(
     (val) => ({
@@ -71,46 +76,6 @@ function TableView() {
     threshold: 0.5 // Threshold for matching, with 0 being a perfect match and 1 matching nothing.
   };
   const fuse = new Fuse(foodItems, options);
-
-  useEffect(() => {
-    console.log("I ran")
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
-        console.log("Updating login state, place 3")
-        console.log(session)
-        setSession(session);
-        setIsLoggedIn(true);
-
-        StoreAuth.update((store) => {
-          store.session = session;
-          store.supabase = supabase;
-          store.isLoggedIn = true;
-        });
-      }
-
-    });
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-
-      if (session) {
-        console.log("Updating login state, place 4")
-        console.log(session)
-        setSession(session);
-        setIsLoggedIn(true);
-  
-        StoreAuth.update((store) => {
-          store.session = session;
-          store.supabase = supabase;
-          store.isLoggedIn = true;
-        });
-      }
-
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
 
 
   const toggleMealSelected = (index, field, value) => {
