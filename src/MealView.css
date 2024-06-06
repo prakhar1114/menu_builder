@@ -1,40 +1,74 @@
-body {
-    background-color: #ffeb3b; /* Bright background color */
-    font-size: medium; /* Font size medium */
-    margin: 0;
-    padding: 0;
-  }
   
   .meal-view {
     font-family: Arial, sans-serif;
     padding: 20px;
     text-align: center;
+    margin: 0;
+    /* background-color: white;
+    color: black; */
   }
   
   .header {
-    margin-bottom: 20px;
+    margin-bottom: 50px;
   }
   
   .meal-tabs {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
+    justify-content: space-around;
   }
   
   .meal-tab {
     border: 1px solid #000;
     border-radius: 10px;
-    padding: 10px;
     cursor: pointer;
-    text-align: center;
-    width: 90%; /* Full screen width with some margin */
-    margin-bottom: 20px;
-    background-color: #ff9800; /* Bright color for meal tabs */
-    color: #ffffff; /* Text color matching the background */
+    /* text-align: center; */
+    width: 25%; 
+    height: 40rem;
+    margin-bottom: 50px;
+    background-color: white; /* Bright color for meal tabs */
+    color: black; /* Text color matching the background */
+    font-size: 3rem;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    /* padding: 1%; */
   }
   
   .food-items {
-    margin-top: 10px;
-    font-size: 1.2em;
+    flex: 2;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    align-items: center; /* Vertically center text */
+    justify-content: center; /* Horizontally center text */
+    background-color: #f8f0e3;
+  }
+
+  .meal-name {
+    /* width: 50%; */
+    width: 100%;
+    flex: 1;
+    /* justify-self: center;
+    align-self: center; */
+    border-bottom: 2px black solid;
+    text-align: center;
+
+    background-color: #d6eaff; 
+
+    display: flex;
+    align-items: center; /* Vertically center text */
+    justify-content: center; /* Horizontally center text */
+  }
+
+  .image-holder {
+    flex: 5;
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: auto;
   }
   
