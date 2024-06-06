@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import '../MealView.css';
 import Modal from '../Modal.js';
 import breakfast_img from '../data/mealView/Breakfast.webp';
@@ -34,6 +34,23 @@ const MealView = () => {
     setShowModal(true);
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === 'Escape') {
+      setShowModal(false);
+    }
+  };
+
+  // Effect to add and remove the event listener
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown);
+
+    // Cleanup function to remove the event listener when the component unmounts
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
+
   return (
     <div className="meal-view">
       <div className="header">
@@ -57,7 +74,7 @@ const MealView = () => {
           </div>
         ))}
       </div>
-      {showModal && <Modal meal={selectedMeal} onClose={() => setShowModal(false)} />}
+      {showModal && <Modal mealtime={selectedMeal} meals={meals}  onClose={() => setShowModal(false)} imgPaths={background_image}/>}
     </div>
   );
 };

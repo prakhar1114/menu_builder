@@ -9,3 +9,9 @@
     color: white;
     text-align: center;
 }
+
+* {
+    font-family: 'Poppins', sans-serif;
+    /* background-color: #C4DFE6;
+    color: #66A5AD; */
+}

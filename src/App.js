@@ -40,11 +40,12 @@ function App() {
       >
         <Router>
           <Routes>
-            <Route path="/" element={<Login />}/>
+            {/* <Route path="/" element={<Login />}/>
             <Route path="/success" element={<Success />} />
-            <Route path="/menu" element={<MenuBoardOffline />} />
+            <Route path="/menu" element={<MenuBoardOffline />} /> */}
             <Route path="/menu-table-view" element={<TableView />} />
             <Route path="/todays-meals" element={<MealView />} />
+            <Route path="/" element={<TableView />}/>
             {/* <Route path="/" element={<Navigate to={currentPage} />} />
             <Route path="*" element={<Navigate to={currentPage} />} /> */}
           </Routes>

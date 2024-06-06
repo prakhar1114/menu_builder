@@ -1,13 +1,30 @@
 import React from 'react';
 import './Modal.css';
 
-const Modal = ({ meal, onClose }) => {
+const Modal = ({ mealtime, meals, onClose, imgPaths }) => {
   return (
-    <div className="modal">
+    <div className="modal"  onClick={onClose}>
       <div className="modal-content">
-        <span className="close" onClick={onClose}>&times;</span>
-        <h2>{meal.charAt(0).toUpperCase() + meal.slice(1)}</h2>
-        <p>Content for {meal} will go here.</p>
+        <span 
+        className='background-img'
+        style={{
+          backgroundImage: `url(${imgPaths[mealtime]})`
+        }}></span>
+
+        <span className='meal-info'>
+          <div className='mealname'>{mealtime.toUpperCase()}</div>
+          <div className='mealitems'>
+            <ul>
+              {
+                meals[mealtime].map((item, index) => (
+                  <li key={index}>
+                    {item}
+                  </li>
+                )
+              )}
+            </ul>
+          </div>
+        </span>
       </div>
     </div>
   );
