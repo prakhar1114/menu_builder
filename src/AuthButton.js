@@ -1,17 +1,14 @@
-import StoreAuth from "./AuthStore";
-import { useStoreState } from "pullstate";
-
-import React, { useState, useEffect, useContext } from "react";
+import React, {useContext} from "react";
 import { AuthContextMain } from "./App";
 
 
-function AuthButton({handleLogin, handleLogout }) {
+function AuthButton({setModalIsOpen }) {
 
-    const { session, setSession, supabase, isLoggedIn, setIsLoggedIn } = useContext(AuthContextMain);
+  const {isLoggedIn} = useContext(AuthContextMain);
 
   return (
     <button className='auth-btn'
-      onClick={isLoggedIn ? handleLogout : handleLogin}
+      onClick={()=>setModalIsOpen(true)}
     >
       {isLoggedIn ? "Logout" : "Login"}
     </button>

@@ -51,7 +51,7 @@ td {
   border: 0.5px solid black;
 }
 
-.save-btn, .add-btn, .done-btn, .modal-close-btn, .auth-btn {
+.save-btn, .add-btn, .done-btn, .modal-close-btn, .auth-btn, .edit-menu-btn {
   padding: 10px 20px;
   font-size: 2rem;
   cursor: pointer;
@@ -77,10 +77,39 @@ td {
   background-color: #fff;
 }
 
-.modal-close-btn, .auth-btn {
+.modal-close-btn {
   position: fixed;
   right: 20px;
   top: 20px;
+}
+
+/* .auth-btn, .edit-menu-btn {
+  position: fixed;
+  right: 20px;
+  top: 20px;
+} */
+
+/* .edit-menu-btn {
+  right: 8%;
+  background-color: orangered;
+} */
+
+.tr-button-container {
+  display: flex;
+  flex-direction: row-reverse;
+  position: fixed;
+  justify-content: space-between;
+  /* margin-right: 1%; */
+  top: 2%;
+  right: 1%;
+}
+
+.auth-btn {
+  flex: 1;
+}
+.edit-menu-btn {
+  flex: 1;
+  background-color: orangered;
 }
 
 
@@ -117,4 +146,34 @@ input[type="text"] {
   background-color: transparent; /* Maintains the cell's background */
   color: inherit; /* Inherits text color from the table */
   border-radius: 4px; /* Optional: adds slight rounding to inputs */
+}
+
+.login-modal {
+  /* position: relative; /* absolute */
+  /* top: 50%; reposition */ 
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  width: 15%;
+  /* max-width: 30%; */
+  /* padding: 3% 4%; Consolidates padding properties */
+  padding-inline: 4%;
+  padding-top: 3%;
+  padding-bottom: 1%;
+  transform: translate(-50%, -50%);
+  font-size: inherit; /* Inherits font size from parent */
+  color: white; /* Inherits text color, possibly from another parent element */
+  background-color: #282c34; /* Dark gray background */
+  border: solid 1px white;
+}
+
+.login-modal-overlay {
+  background-color: rgba(0, 0, 0, 0.8);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }

@@ -25,7 +25,7 @@
     cursor: pointer;
     /* text-align: center; */
     width: 25%; 
-    height: 40rem;
+    height: 80vh;
     margin-bottom: 50px;
     background-color: white; /* Bright color for meal tabs */
     color: black; /* Text color matching the background */
@@ -65,7 +65,7 @@
   }
 
   .image-holder {
-    flex: 5;
+    flex: 9;
     background-size: cover;
     background-position: center;
     width: 100%;

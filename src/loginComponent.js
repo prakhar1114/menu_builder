@@ -3,9 +3,11 @@ import { ThemeSupa } from "@supabase/auth-ui-shared";
 import StoreAuth from "./AuthStore";
 import React, { useState, useEffect, useContext } from "react";
 import { AuthContextMain } from "./App";
+import Modal from 'react-modal';
+import "./tableView.css"
 
 function LoginElement() {
-  const { session, setSession, supabase, isLoggedIn, setIsLoggedIn, currentPage, setCurrentPage } =
+  const { session, setSession, supabase, setIsLoggedIn, currentPage } =
     useContext(AuthContextMain);
 
   const onLogout = () => {
@@ -79,46 +81,8 @@ function LoginElement() {
 
 
 function useCheckLogin() {
-  const { session, setSession, supabase, isLoggedIn, setIsLoggedIn, currentPage, setCurrentPage } =
+  const { setSession, supabase, setIsLoggedIn} =
   useContext(AuthContextMain);
-
-  // useEffect(() => {
-  //   console.log("Login btn container");
-  //   supabase.auth.getSession().then(({ data: { session } }) => {
-  //     console.log(`inside session ${session}`)
-  //     if (session) {
-  //       console.log("Updating login state, place 1");
-  //       console.log(session);
-  //       setSession(session);
-  //       setIsLoggedIn(true);
-
-  //       StoreAuth.update((store) => {
-  //         store.session = session;
-  //         store.supabase = supabase;
-  //         store.isLoggedIn = true;
-  //       });
-  //     }
-  //   });
-
-  //   const {
-  //     data: { subscription },
-  //   } = supabase.auth.onAuthStateChange((_event, session) => {
-  //     if (session) {
-  //       console.log("Updating login state, place 2");
-  //       console.log(session);
-  //       setSession(session);
-  //       setIsLoggedIn(true);
-
-  //       StoreAuth.update((store) => {
-  //         store.session = session;
-  //         store.supabase = supabase;
-  //         store.isLoggedIn = true;
-  //       });
-  //     }
-  //   });
-
-  //   return () => subscription.unsubscribe();
-  // }, []);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { sessioncheck } }) => {
@@ -145,3 +109,37 @@ function useCheckLogin() {
 
 export default LoginElement;
 export  { useCheckLogin };
+
+function LoginModal({
+  modalIsOpen,
+  setModalOpen,
+}) 
+
+  {
+
+  Modal.setAppElement('#root');
+
+  return (
+    <Modal
+    isOpen={modalIsOpen}
+    onRequestClose={()=>setModalOpen(false)}
+    className="login-modal"
+    overlayClassName="login-modal-overlay"
+    contentLabel="Example Modal"
+    // aria={{
+    //   labelledby: "heading",
+    //   describedby: "full_description"
+    // }}
+  >
+    <LoginElement/>
+      <button 
+        className="modal-close-btn"
+        onClick={()=>setModalOpen(false)}
+      >
+        X
+      </button>
+    </Modal>
+  )
+}
+
+export {LoginModal};

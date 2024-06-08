@@ -14,6 +14,7 @@ import TableView from "./pages/tableView";
 import { createClient } from "@supabase/supabase-js";
 import StoreAuth from "./AuthStore";
 
+
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
 const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY;
 

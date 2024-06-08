@@ -6,43 +6,14 @@ import { tabularData } from "../WeeklyMenu";
 import "../tableView.css";
 import foodItems from "../FoodItems";
 import Fuse from 'fuse.js';
-import Modal from 'react-modal';
-import StoreAuth from "../AuthStore";
-import { useStoreState } from "pullstate";
-import LoginElement from "../loginComponent";
 import AuthButton from "../AuthButton";
-import { useCheckLogin } from "../loginComponent";
-
-
-const customStyles = {
-  content: {
-    position: 'relative',
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    maxWidth: '20%',
-    paddingLeft: '5%',
-    paddingRight: '5%',
-    paddingTop: '5%',
-    paddingBottom: '5%',
-    // maxHeight: '60%',
-    // marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-    fontSize: 'inherit', 
-    color: 'white', /* Inherits text color from the table */
-    backgroundColor: '#282c34',
-    // overflow: 'hidden',
-  },
-  overlay: {
-    // backgroundColor: 'inherit'
-  }
-};
+import { useCheckLogin, LoginModal } from "../loginComponent";
+import { useNavigate } from 'react-router-dom';
 
 
 function TableView() {
 
-  const { session, setSession, supabase, isLoggedIn, setIsLoggedIn, currentPage, setCurrentPage } = useContext(AuthContextMain);
+  const { isLoggedIn, currentPage, setCurrentPage } = useContext(AuthContextMain);
 
   setCurrentPage('http://localhost:3000/menu-table-view')
   console.log(`Currently on ${currentPage}`)
@@ -57,10 +28,7 @@ function TableView() {
     })
   );
 
-  // const { isLoggedIn } = useStoreState(StoreAuth, (s) => ({
-  //   isLoggedIn: s.isLoggedIn,
-  // }));
-  // const isLoggedIn = false
+
   const [seachResults, setSearchResults] = useState([])
   const [userMenu, setUserMenu] = useState(tabularData);
   const [mealSelectedArray, setMealSelected] = useState(defaultMealState);
@@ -68,7 +36,7 @@ function TableView() {
   const [mealTime, setMealTime] = useState("Breakfast")
   const [modalIsOpen, setIsOpen] = useState(false);
 
-  Modal.setAppElement('#root');
+  const navigate = useNavigate();
 
   const options = {
     includeScore: true, // Include the score in the result
@@ -146,29 +114,6 @@ function TableView() {
     }
   }
 
-  function openModal() {
-    setIsOpen(true);
-  }
-
-  function afterOpenModal() {
-    // references are now sync'd and can be accessed.
-    // subtitle.style.color = '#f00';
-
-    console.log("now the modal is open, now what?")
-  }
-
-  function closeModal() {
-    setIsOpen(false);
-  }
-
-  function handleLogin() {
-    setIsOpen(true);
-  }
-  function handleLogout() {
-    setIsOpen(true);
-  }
-
-
   const mealList = ["Breakfast", "Lunch", "Dinner"];
 
   return (
@@ -222,9 +167,13 @@ function TableView() {
       </button>
       <button 
       className="done-btn"
-      onClick={()=> toggleMealSelected(currentRowIndex, mealTime, false)}
+      onClick={()=> {
+        saveToDB();
+        navigate('/todays-meals');
+
+      }}
       >
-        Done
+        Save & Done
       </button>
     </div>
     <div className="search-container">
@@ -246,15 +195,14 @@ function TableView() {
     </div>
     <LoginModal
         modalIsOpen={modalIsOpen}
-        afterOpenModal={afterOpenModal}
-        closeModal={closeModal}
-        customStyles={customStyles}
+        setModalOpen={setIsOpen}
       >
     </LoginModal>
-    <AuthButton
-      handleLogin={handleLogin}
-      handleLogout={handleLogout}
-    />
+    <div className="tr-button-container">
+      <AuthButton
+        setModalIsOpen = {setIsOpen}
+      />
+    </div>
 </div>
   );
 }
@@ -289,30 +237,4 @@ function SingleMeal({
     )
   }
 
-}
-
-
-function LoginModal({
-  modalIsOpen,
-  afterOpenModal,
-  closeModal,
-  customStyles,
-}) {
-  return (
-    <Modal
-    isOpen={modalIsOpen}
-    onAfterOpen={afterOpenModal}
-    onRequestClose={closeModal}
-    style={customStyles}
-    contentLabel="Example Modal"
-  >
-    <LoginElement/>
-      <button 
-        className="modal-close-btn"
-        onClick={closeModal}
-      >
-        X
-      </button>
-    </Modal>
-  )
 }
