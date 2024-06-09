@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { useCheckLogin, LoginModal } from "../loginComponent";
 import AuthButton from "../AuthButton";
 import useUserMenuAPI from "../ApiCalls";
+import getBaseUrl from '../utils.js';
 
 
 const MealView = () => {
@@ -31,7 +32,9 @@ const MealView = () => {
   });
 
   console.log(`Currently on ${currentPage}`)
-  setCurrentPage('http://localhost:3000/todays-meals')
+  
+  const base_url = getBaseUrl();
+  setCurrentPage(base_url, '/todays-meals')
   useCheckLogin();
 
   const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];

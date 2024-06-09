@@ -8,13 +8,15 @@ import AuthButton from "../AuthButton";
 import { useCheckLogin, LoginModal } from "../loginComponent";
 import { useNavigate } from 'react-router-dom';
 import useUserMenuAPI from "../ApiCalls";
+import getBaseUrl from "../utils";
 
 
 function TableView() {
 
   const { isLoggedIn, currentPage, setCurrentPage } = useContext(AuthContextMain);
 
-  setCurrentPage('http://localhost:3000/menu-table-view')
+  const base_url = getBaseUrl();
+  setCurrentPage(base_url, '/menu-table-view')
   console.log(`Currently on ${currentPage}`)
   useCheckLogin();
 
