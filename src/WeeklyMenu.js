@@ -45,3 +45,34 @@ const weeklyMenu = {
 
 
 export default weeklyMenu;
+
+export const tabular2DictMenu = (tabularMenu) => {
+  const menu = {};
+  tabularMenu.forEach((val) => {
+    menu[val.Day] = {
+      "Breakfast": val.Breakfast.split(', '),
+      "Lunch": val.Lunch.split(', '),
+      "Dinner": val.Dinner.split(', '),
+    }
+  })
+  return menu;
+}
+
+export const cleanup = (comma_separated_string) => {
+  return comma_separated_string.split(',')
+  .map(item => item.trim())
+  .filter(item => item!=='')
+  .join(', ')
+}
+
+export const remove_extra_commas = (menu) => {
+  const cleaned_menu = menu.map(val=> ({
+    Day: val.Day,
+    Breakfast: cleanup(val.Breakfast),
+    Lunch: cleanup(val.Lunch),
+    Dinner: cleanup(val.Dinner),
+  })
+  );
+
+  return cleaned_menu;
+}

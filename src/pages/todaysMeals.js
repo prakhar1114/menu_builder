@@ -6,17 +6,21 @@ import Modal from '../Modal.js';
 import breakfast_img from '../data/mealView/Breakfast.webp';
 import lunch_img from '../data/mealView/Lunch.webp';
 import dinner_img from '../data/mealView/Dinner.webp';
-import weeklyMenu from "../WeeklyMenu";
+import weeklyMenu, {tabular2DictMenu} from "../WeeklyMenu";
 import { useNavigate } from 'react-router-dom';
 import { useCheckLogin, LoginModal } from "../loginComponent";
 import AuthButton from "../AuthButton";
-
+import useUserMenuAPI from "../ApiCalls";
 
 
 const MealView = () => {
+  const { isLoggedIn, currentPage, setCurrentPage } = useContext(AuthContextMain);
+
   const [selectedMeal, setSelectedMeal] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [loginModalOpen, setloginModal] = useState(false);
+  const [currentMenu, setCurrentMenu] = useState(weeklyMenu);
+  const {GetUserMenu} = useUserMenuAPI();
   
   const currentDate = new Date();
   const formattedDate = currentDate.toLocaleDateString('en-GB', {
@@ -26,15 +30,13 @@ const MealView = () => {
     year: 'numeric',
   });
 
-  const { isLoggedIn, currentPage, setCurrentPage } = useContext(AuthContextMain);
-  setCurrentPage('http://localhost:3000/todays-meals')
   console.log(`Currently on ${currentPage}`)
+  setCurrentPage('http://localhost:3000/todays-meals')
   useCheckLogin();
 
   const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   const dayName = days[currentDate.getDay()];
 
-  const meals = weeklyMenu[dayName];
   const background_image = {
     Breakfast: breakfast_img,
     Lunch: lunch_img,
@@ -63,6 +65,23 @@ const MealView = () => {
     };
   }, []);
 
+  useEffect(() => {
+    console.log("Attempting to get user menu");
+    GetUserMenu().then(data => {
+      if (data !== null) {
+        setCurrentMenu(tabular2DictMenu(data));
+        console.log(`Updating menu ${data}`)
+      }
+  }).catch(error => {
+      console.error('Failed to fetch user menu:', error);
+  });
+
+    if (! isLoggedIn) {
+      setCurrentMenu(weeklyMenu);
+    }
+
+      }, [isLoggedIn]);
+
 
   return (
     <div className="meal-view">
@@ -71,7 +90,7 @@ const MealView = () => {
         <h1>{formattedDate}</h1>
       </div>
       <div className="meal-tabs">
-        {Object.keys(meals).map((meal) => (
+        {Object.keys(currentMenu[dayName]).map((meal) => (
           <div key={meal}
             className="meal-tab" 
             onClick={() => handleMealClick(meal)}
@@ -83,11 +102,11 @@ const MealView = () => {
               }}
             ></div>
             <div className="meal-name">{meal.toUpperCase()}</div>
-            <div className="food-items">{meals[meal].join(', ')}</div>
+            <div className="food-items">{currentMenu[dayName][meal].join(', ')}</div>
           </div>
         ))}
       </div>
-      {showModal && <Modal mealtime={selectedMeal} meals={meals}  onClose={() => setShowModal(false)} imgPaths={background_image}/>}
+      {showModal && <Modal mealtime={selectedMeal} meals={currentMenu[dayName]}  onClose={() => setShowModal(false)} imgPaths={background_image}/>}
       <div className='tr-button-container'>
         <div>
           <AuthButton

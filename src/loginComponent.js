@@ -1,7 +1,7 @@
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
 import StoreAuth from "./AuthStore";
-import React, { useState, useEffect, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import { AuthContextMain } from "./App";
 import Modal from 'react-modal';
 import "./tableView.css"
@@ -59,7 +59,16 @@ function LoginElement() {
       // <div className="login">
       <Auth
         supabaseClient={supabase}
-        appearance={{ theme: ThemeSupa }}
+        appearance={{ 
+          theme: ThemeSupa,
+          variables: {
+            default: {
+              colors: {
+                inputText: 'white',
+              },
+            },
+          }
+        }}
         providers={["google"]}
         redirectTo={currentPage}
       />
@@ -143,3 +152,5 @@ function LoginModal({
 }
 
 export {LoginModal};
+
+// user_id = session.user.id

@@ -51,7 +51,7 @@ td {
   border: 0.5px solid black;
 }
 
-.save-btn, .add-btn, .done-btn, .modal-close-btn, .auth-btn, .edit-menu-btn {
+.save-btn, .add-btn, .done-btn, .modal-close-btn, .auth-btn, .edit-menu-btn, .go2viewpage-btn {
   padding: 10px 20px;
   font-size: 2rem;
   cursor: pointer;
@@ -68,6 +68,10 @@ td {
 
 .done-btn {
   background-color: orange;
+}
+
+.go2viewpage-btn {
+  background-color: palevioletred;
 }
 
 .search-items {

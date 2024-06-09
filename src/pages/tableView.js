@@ -1,14 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 import { AuthContextMain } from "../App";
-// import foodItems from "../FoodItems";
-// import weeklyMenu from "../WeeklyMenu";
-import { tabularData } from "../WeeklyMenu";
+import { tabularData, remove_extra_commas } from "../WeeklyMenu";
 import "../tableView.css";
 import foodItems from "../FoodItems";
 import Fuse from 'fuse.js';
 import AuthButton from "../AuthButton";
 import { useCheckLogin, LoginModal } from "../loginComponent";
 import { useNavigate } from 'react-router-dom';
+import useUserMenuAPI from "../ApiCalls";
 
 
 function TableView() {
@@ -28,15 +27,16 @@ function TableView() {
     })
   );
 
-
+  const mealList = ["Breakfast", "Lunch", "Dinner"];
   const [seachResults, setSearchResults] = useState([])
   const [userMenu, setUserMenu] = useState(tabularData);
   const [mealSelectedArray, setMealSelected] = useState(defaultMealState);
   const [currentRowIndex, setCurrentRowIndex] = useState(0)
   const [mealTime, setMealTime] = useState("Breakfast")
   const [modalIsOpen, setIsOpen] = useState(false);
-
   const navigate = useNavigate();
+  const [addNextButton, enableAddNextButton] = useState(false);
+  const {GetUserMenu, InsertUserMenu} = useUserMenuAPI();
 
   const options = {
     includeScore: true, // Include the score in the result
@@ -45,6 +45,24 @@ function TableView() {
   };
   const fuse = new Fuse(foodItems, options);
 
+
+  useEffect(() => {
+    console.log("Attempting to get user menu");
+    GetUserMenu().then(data => {
+      if (data !== null) {
+          setUserMenu(data);
+          console.log(`Updating menu ${data}`)
+      }
+      }).catch(error => {
+          console.error('Failed to fetch user menu:', error);
+      });
+
+      if (! isLoggedIn) {
+        setUserMenu(tabularData);
+      }
+
+      }, [isLoggedIn]
+  );
 
   const toggleMealSelected = (index, field, value) => {
     // console.log("Toggling others off")
@@ -56,7 +74,13 @@ function TableView() {
     
     toggleOffEverything[index][field] = value;
     setMealSelected(toggleOffEverything);
-    setSearchResults([])
+    setSearchResults([]);
+
+    if (value) {
+      enableAddNextButton(value);
+    } else {
+      enableAddNextButton(value);
+    }
   };
 
     // Function to handle changes in input fields
@@ -94,27 +118,33 @@ function TableView() {
 
   // Add Next Item
   const appendComma = () => {
-    console.log('Lets try to append comma')
+    console.log('Lets try to append comma');
+    const updatedMenu = [...userMenu];
+    updatedMenu[currentRowIndex][mealTime] = updatedMenu[currentRowIndex][mealTime] + ', ';
+    setUserMenu(updatedMenu);
   }
 
   // save button
-  const saveToDB = () => {
+  const saveToDB = async () => {
+
     toggleMealSelected(currentRowIndex, mealTime, false);
-    // TODO clear extra commas
-    // TODO modal to login to save, attempt to fetch existing credentials
+    const updated_menu = remove_extra_commas(userMenu);
+    setUserMenu(updated_menu);
 
     if (isLoggedIn) {
-      // TODO save to DB
       console.log("Trying to Save to DB");
-
+      InsertUserMenu(updated_menu).then(response => {
+        if (response.error) {
+          console.log('Error: ', response.error)
+        } else {
+          console.log('Menu inserted successfully')
+        }}).catch(
+        error => console.error('Unexpected error:', error)
+      )
     } else {
-      // TODO show modal to login
       setIsOpen(true);
-    
     }
   }
-
-  const mealList = ["Breakfast", "Lunch", "Dinner"];
 
   return (
     <div className="Table">
@@ -159,21 +189,34 @@ function TableView() {
       >
         Save
       </button>
+      {
+        addNextButton && (
+          <button 
+            className="add-btn"
+            onClick={appendComma}
+          >
+            Add Next Item
+          </button>
+        )
+      }
+      {
+        addNextButton && (
+          <button 
+            className="done-btn"
+            onClick={()=> toggleMealSelected(currentRowIndex, mealTime, false)}
+          >
+            Done
+          </button>
+        )
+      }
       <button 
-        className="add-btn"
-        onClick={appendComma}
-      >
-        Add Next Item
-      </button>
-      <button 
-      className="done-btn"
+      className="go2viewpage-btn"
       onClick={()=> {
         saveToDB();
         navigate('/todays-meals');
-
       }}
       >
-        Save & Done
+        {isLoggedIn ? "Save & Go to View Page" : "Go to View Page"}
       </button>
     </div>
     <div className="search-container">
