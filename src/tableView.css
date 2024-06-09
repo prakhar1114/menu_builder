@@ -6,22 +6,22 @@
   height: auto;
   min-height: 100vh;
   margin: 0;
-  padding: 20px;
+  /* padding: 3vh; */
   /* background-color: #f4f4f4; */
 }
 
 table {
   border-collapse: collapse;
-  font-size: 2rem;
+  font-size: 3vh;
   color: #333;
-  margin-bottom: 20px; /* Space between the table and buttons */
+  margin-bottom: 3vh; /* Space between the table and buttons */
   table-layout: auto;
   width: auto;
 }
 
 th, td {
   border: 1px solid #000;
-  padding: 8px;
+  padding: 4px;
   text-align: center;
 }
 
@@ -52,8 +52,8 @@ td {
 }
 
 .save-btn, .add-btn, .done-btn, .modal-close-btn, .auth-btn, .edit-menu-btn, .go2viewpage-btn {
-  padding: 10px 20px;
-  font-size: 2rem;
+  padding: 1vh 2vh;
+  font-size: 3vh;
   cursor: pointer;
   margin: 0 10px;
   border: none;
@@ -76,15 +76,17 @@ td {
 
 .search-items {
   width: 100%; /* Full width of the cell */
-  padding: 6px 10px; /* Slightly smaller padding to fit nicely */  
+  padding: 0.1vh 2vw; /* Slightly smaller padding to fit nicely */  
   font-size: 2rem;
   background-color: #fff;
+  border-radius: 5px;
 }
 
 .modal-close-btn {
   position: fixed;
-  right: 20px;
-  top: 20px;
+  right: 1vw;
+  top: 2vh;
+  padding: 0vh 0.2vw;
 }
 
 /* .auth-btn, .edit-menu-btn {
@@ -119,7 +121,7 @@ td {
 
 input[type="text"] {
   width: 100%; /* Full width of the cell */
-  padding: 6px 10px; /* Slightly smaller padding to fit nicely */
+  padding: 0.5vh 0.5vw; /* Slightly smaller padding to fit nicely */
   border: none;
   font-size: inherit; /* Inherits font-size from the table */
   text-align: center; /* Center text inside the input */
@@ -131,7 +133,7 @@ input[type="text"] {
 
 .meal-input {
   width: 100%; /* Full width of the cell */
-  padding: 6px 10px; /* Slightly smaller padding to fit nicely */
+  padding: 0.5vh 0.5vw; /* Slightly smaller padding to fit nicely */
   border: none;
   font-size: inherit; /* Inherits font-size from the table */
   text-align: center; /* Center text inside the input */
@@ -143,7 +145,7 @@ input[type="text"] {
 
 .meal-input-focus {
   width: auto; /* Full width of the cell */
-  padding: 6px 10px; /* Slightly smaller padding to fit nicely */
+  padding: 0.5vh 0.5vw; /* Slightly smaller padding to fit nicely */
   border: none;
   font-size: inherit; /* Inherits font-size from the table */
   text-align: center; /* Center text inside the input */

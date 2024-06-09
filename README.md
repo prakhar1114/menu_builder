@@ -23,7 +23,7 @@
 - [x] button container on top right positioned there with flexbox, use it across the project: Must add login button in the
       todays meals page : 8 June
 
-- [ ] Add RLS policies on users allowed to access which rows
+- [X] Add RLS policies on users allowed to access which rows
       - [x] Select only where user_id matches authenticated user
       - [x] Update only where user_id matches authenticated user
 
@@ -35,7 +35,7 @@
       - [ ] Default recommendations based on their home place (Give a page which asks where the person is located from and sets it as defaults)
       - [ ] Define Menu tags (for selecting and setting) in the table
 
-- [ ] CSS fixes for button to be % of screen size
+- [X] CSS fixes for button to be % of screen size
 
 ## Guidelines
 

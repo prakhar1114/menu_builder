@@ -110,7 +110,7 @@ function TableView() {
 
     const values = updatedMenu[currentRowIndex][mealTime].split(',');
     values[values.length - 1] = item + ',';
-    const newValue = values.join(',');
+    const newValue = values.join(', ');
 
     updatedMenu[currentRowIndex][mealTime] = newValue;
     setUserMenu(updatedMenu);
