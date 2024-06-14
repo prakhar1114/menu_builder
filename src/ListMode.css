@@ -1,0 +1,56 @@
+* {
+    text-align: inherit;
+    /* margin-left: 5px; */
+    border-radius: 5px;
+}
+
+.week-food-data {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.daymealCard {
+    display: flex;
+    flex-direction: column;
+    
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+
+.mealTitle {
+    flex: 2;
+    /* border: 1px solid white; */
+    margin-left: 10px;
+    text-align: left;
+}
+
+.mealContents {
+    flex: 5;
+    margin-bottom: 8px;
+    margin-left: 20px;
+    text-align: left;
+}
+
+
+.meals {
+    display: flex;
+    flex-direction: row;
+}
+
+.day {
+    flex: 2;
+    /* border: 1px solid white; */
+    /* text-align: center; */
+    font-size: 10px;
+    margin-left: 5px;
+    /* align-self: center; */
+}
+
+.all-meals-container {
+    flex: 7;
+    border: 1px solid white;
+
+    margin-bottom: 5px;
+}

@@ -13,6 +13,7 @@ import MealView from "./pages/todaysMeals";
 import TableView from "./pages/tableView";
 import { createClient } from "@supabase/supabase-js";
 import StoreAuth from "./AuthStore";
+import ListMode from "./pages/listEditMode";
 
 
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
@@ -26,6 +27,7 @@ function App() {
   const [session, setSession] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentPage, setCurrentPage] = useState("http://localhost:3000/")
+  const mobileView = window.innerWidth < 768 ;
 
   return (
     <div className="App">
@@ -41,14 +43,20 @@ function App() {
       >
         <Router>
           <Routes>
+
+            <Route path="/menu-table-view" element={<TableView />} />
+            <Route path="/todays-meals" element={<MealView />} />
+            <Route path="/editable-list-mode" element={<ListMode />}/>
+            {mobileView ? (
+              <Route path="/" element={<ListMode />}/>
+            ) : (
+              <Route path="/" element={<TableView />}/>
+            )
+            }
+
             {/* <Route path="/" element={<Login />}/>
             <Route path="/success" element={<Success />} />
             <Route path="/menu" element={<MenuBoardOffline />} /> */}
-            <Route path="/menu-table-view" element={<TableView />} />
-            <Route path="/todays-meals" element={<MealView />} />
-            <Route path="/" element={<TableView />}/>
-            {/* <Route path="/" element={<Navigate to={currentPage} />} />
-            <Route path="*" element={<Navigate to={currentPage} />} /> */}
           </Routes>
         </Router>
       </AuthContextMain.Provider>

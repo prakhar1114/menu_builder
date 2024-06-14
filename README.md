@@ -36,6 +36,13 @@
       - [ ] Define Menu tags (for selecting and setting) in the table
 
 - [X] CSS fixes for button to be % of screen size
+- [ ] Create mobile View
+      - [ ] table alternate
+            - [ ] Create modality
+            - [X] Basic Page Done
+      - [ ] View alternate
+      - [ ] Redirection based on resolution
+- [ ] Add user greetings on the page
 
 ## Guidelines
 
