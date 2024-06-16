@@ -1,3 +1,6 @@
+import Fuse from 'fuse.js';
+import foodItems from "./FoodItems";
+
 const getBaseUrl = () => {
     const { protocol, hostname, port } = window.location;
     return `${protocol}//${hostname}${port ? `:${port}` : ''}`;
@@ -29,3 +32,11 @@ function getWeekMapping() {
 
   return weekMapping;
 }
+
+const options = {
+  includeScore: true, // Include the score in the result
+  findAllMatches: true, // When true, will continue searching even after a perfect match is found.
+  threshold: 0.5 // Threshold for matching, with 0 being a perfect match and 1 matching nothing.
+};
+const fuse = new Fuse(foodItems, options);
+export {fuse};

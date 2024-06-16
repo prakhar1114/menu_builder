@@ -2,8 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { AuthContextMain } from "../App";
 import { tabularData, remove_extra_commas } from "../WeeklyMenu";
 import "../tableView.css";
-import foodItems from "../FoodItems";
-import Fuse from 'fuse.js';
+import { fuse } from "../utils";
 import AuthButton from "../AuthButton";
 import { useCheckLogin, LoginModal } from "../loginComponent";
 import { useNavigate } from 'react-router-dom';
@@ -40,12 +39,6 @@ function TableView() {
   const [addNextButton, enableAddNextButton] = useState(false);
   const {GetUserMenu, InsertUserMenu} = useUserMenuAPI();
 
-  const options = {
-    includeScore: true, // Include the score in the result
-    findAllMatches: true, // When true, will continue searching even after a perfect match is found.
-    threshold: 0.5 // Threshold for matching, with 0 being a perfect match and 1 matching nothing.
-  };
-  const fuse = new Fuse(foodItems, options);
 
 
   useEffect(() => {
