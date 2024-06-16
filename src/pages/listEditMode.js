@@ -78,13 +78,27 @@ export default MealCard;
       setSearchResults(results)
 
       setUserMenu(updatedMenu);
-    }
+    };
 
     const handleInput = (event) => {
       const textarea = event.target;
       textarea.style.height = "auto";  // Reset the height
       textarea.style.height = `${textarea.scrollHeight}px`;  // Set to scroll height
     };
+
+    const appendFoodItem = (item) => {
+      const updatedMenu = [...userMenu];
+  
+      const values = updatedMenu[selectedIndex][editWhichMeal].split(',');
+      values[values.length - 1] = item + ',';
+      const newValue = values.join(', ');
+  
+      updatedMenu[selectedIndex][editWhichMeal] = newValue;
+      setUserMenu(updatedMenu);
+      setSearchResults([]);
+      inputRef.current.focus();
+    }
+
 
     return (
       <div className="week-food-data">
@@ -146,6 +160,24 @@ export default MealCard;
           // center
         >
           <div className='support-text'>Edit {editWhichMeal} plan for {editWhichDay}</div>
+
+          <div className="search-container">
+            {seachResults.length > 0 && (
+              <ul style={{ listStyleType: "none", padding: 0 }}>
+                {seachResults.map((item, index) => (
+                  <li 
+                  className="search-items" 
+                  key={index} 
+                  style={{ cursor: "pointer" }}
+                  onClick={()=>appendFoodItem(item)}
+                  >
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+
           <div className='edit-meal-container'>
             <textarea
               className="edit-meal-area"
