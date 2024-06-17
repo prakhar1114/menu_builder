@@ -1,19 +1,20 @@
 // import { useState } from "react";
 import "../ListMode.css"
-import { tabularData } from "../WeeklyMenu";
+import { tabularData, remove_extra_commas } from "../WeeklyMenu";
 import { useState, useEffect, useContext, useRef } from "react";
 import { useInView } from 'react-intersection-observer';
 import { getWeekMapping } from "../utils";
 import 'react-responsive-modal/styles.css';
 import { Modal } from 'react-responsive-modal';
 import { fuse } from "../utils";
-import { MdEdit } from "react-icons/md";
+import { MdEdit, MdSave } from "react-icons/md";
 import { IoSendSharp } from "react-icons/io5";
 import { RxDropdownMenu } from "react-icons/rx";
 import { AuthContextMain } from "../App";
 import getBaseUrl from "../utils";
 import { useCheckLogin } from "../loginComponent";
 import LoginElement from "../loginComponent";
+import useUserMenuAPI from "../ApiCalls";
 
 
 const TextHighlighter = ({ text }) => {
@@ -60,6 +61,7 @@ export default MealCard;
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [ddisOpen, setDDIsOpen] = useState(false);
     const dropdownRef = useRef(null);
+    const {GetUserMenu, InsertUserMenu} = useUserMenuAPI();
 
     const weekdayMapping = getWeekMapping();
 
@@ -100,6 +102,24 @@ export default MealCard;
       inputRef.current.focus();
     }
 
+    const saveToDB = async () => {
+      const updated_menu = remove_extra_commas(userMenu);
+      if (isLoggedIn) {
+        console.log("Trying to Save to DB");
+        InsertUserMenu(updated_menu).then(response => {
+          if (response.error) {
+            console.log('Error: ', response.error)
+          } else {
+            console.log('Menu inserted successfully')
+          }}).catch(
+          error => console.error('Unexpected error:', error)
+        )
+        alert("Saved to your profile");
+      } else {
+        setShowLoginModal(true);
+      }
+    }
+
     useEffect(() => {
       const handleClickOutside = (event) => {
           if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -123,6 +143,22 @@ export default MealCard;
       };
     }, [ddisOpen]);
 
+    useEffect(() => {
+      console.log("Attempting to get user menu");
+      GetUserMenu().then(data => {
+        if (data !== null) {
+            setUserMenu(data);
+            console.log(`Updating menu ${data}`)
+        }
+        }).catch(error => {
+            console.error('Failed to fetch user menu:', error);
+        });
+  
+        if (! isLoggedIn) {
+          setUserMenu(tabularData);
+        }
+  
+        }, [isLoggedIn]);
 
     return (
       <>
@@ -261,6 +297,7 @@ export default MealCard;
           </Modal>
 
         </div>
+        <button className="fixed-save" onClick={saveToDB}>Save <MdSave  fontSize="100%" color="white"/></button>
       </>
     )
 }
