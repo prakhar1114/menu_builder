@@ -38,8 +38,9 @@
 - [X] CSS fixes for button to be % of screen size
 - [ ] Create mobile View
       - [ ] table alternate
-            - [ ] Create modality
+            - [X] Create modality
             - [X] Basic Page Done
+            - [X] Login button, modal
       - [ ] View alternate
       - [ ] Redirection based on resolution
 - [ ] Add user greetings on the page

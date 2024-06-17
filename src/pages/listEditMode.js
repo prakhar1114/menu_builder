@@ -2,27 +2,19 @@
 import "../ListMode.css"
 import { tabularData } from "../WeeklyMenu";
 import { useState, useEffect, useContext, useRef } from "react";
+import { useInView } from 'react-intersection-observer';
 import { getWeekMapping } from "../utils";
 import 'react-responsive-modal/styles.css';
 import { Modal } from 'react-responsive-modal';
-import { MdEdit } from "react-icons/md";
 import { fuse } from "../utils";
+import { MdEdit } from "react-icons/md";
 import { IoSendSharp } from "react-icons/io5";
+import { RxDropdownMenu } from "react-icons/rx";
+import { AuthContextMain } from "../App";
+import getBaseUrl from "../utils";
+import { useCheckLogin } from "../loginComponent";
+import LoginElement from "../loginComponent";
 
-
-// const ListMode = () => {
-//     return (
-//         <h1>
-//             Hi, I will become list mode.
-//         </h1>
-//     )
-// }
-
-
-// export default ListMode;
-
-import React from 'react';
-import { useInView } from 'react-intersection-observer';
 
 const TextHighlighter = ({ text }) => {
   const { ref, inView } = useInView({
@@ -52,13 +44,22 @@ export default MealCard;
 
 // function MealCard({mealTitle, mealContents}) {
   function MealCard() {
+    const { isLoggedIn, currentPage, setCurrentPage } = useContext(AuthContextMain);
+    const base_url = getBaseUrl();
+    setCurrentPage(base_url, '/editable-list-mode')
+    console.log(`Currently on ${currentPage}`)
+    useCheckLogin();
+
+    const mealList = ["Breakfast", "Lunch", "Dinner"];
+    const [seachResults, setSearchResults] = useState([]);
     const [userMenu, setUserMenu] = useState(tabularData);
-    const [showModal, setShowModal] = useState(false);
+    const [showLoginModal, setShowLoginModal] = useState(false);
+    const [showEditModal, setShowEditModal] = useState(false);
     const [editWhichDay, setEditWhichDay] = useState('Monday');
     const [editWhichMeal, setEditWhichMeal] = useState('Breakfast');
     const [selectedIndex, setSelectedIndex] = useState(0);
-    const [seachResults, setSearchResults] = useState([])
-    const mealList = ["Breakfast", "Lunch", "Dinner"];
+    const [ddisOpen, setDDIsOpen] = useState(false);
+    const dropdownRef = useRef(null);
 
     const weekdayMapping = getWeekMapping();
 
@@ -99,101 +100,167 @@ export default MealCard;
       inputRef.current.focus();
     }
 
+    useEffect(() => {
+      const handleClickOutside = (event) => {
+          if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+              setDDIsOpen(false);  // Close the dropdown if click is outside
+          }
+      };
+
+      // Add when the dropdown is open and remove when it's closed
+      if (ddisOpen) {
+          document.addEventListener('mousedown', handleClickOutside);
+          document.addEventListener('touchstart', handleClickOutside);
+      } else {
+          document.removeEventListener('mousedown', handleClickOutside);
+          document.removeEventListener('touchstart', handleClickOutside);
+      }
+
+      // Clean up
+      return () => {
+          document.removeEventListener('mousedown', handleClickOutside);
+          document.removeEventListener('touchstart', handleClickOutside);
+      };
+    }, [ddisOpen]);
+
 
     return (
-      <div className="week-food-data">
-        {userMenu.map((row, index) => {
-          return (
-            <div className = 'daymealCard'>
-              <div className = 'day'>
-                {weekdayMapping[row.Day]} , {row.Day}
-              </div>
+      <>
+        {/* <div className="top-bar"> */}
+        <h2> Plan you Weekly Menu</h2>
+        <div ref={dropdownRef}>
+          <button className="fixed-dropdown" onClick={()=> setDDIsOpen(!ddisOpen)}><RxDropdownMenu  fontSize="400%" color="white"/></button>
+          {ddisOpen && (
+                  <ul className="dropdown-content">
+                      <li onClick={() => setShowLoginModal(true)}>{isLoggedIn ? "Logout" : "Login"}</li>
+                      {/* <li onClick={() => alert('Item 2 clicked')}>Item 2</li> */}
+                  </ul>
+              )}
+        </div>
+        <div className="week-food-data">
+          {userMenu.map((row, index) => {
+            return (
+              <div className = 'daymealCard'>
+                <div className = 'day'>
+                  {weekdayMapping[row.Day]} , {row.Day}
+                </div>
 
-              <div className = "all-meals-container">
-                {mealList.map((meal)=> {
-                    return (
-                    <div className="meals">
-                      <div className='mealTitle'>
-                        {meal}
+                <div className = "all-meals-container">
+                  {mealList.map((meal)=> {
+                      return (
+                      <div className="meals">
+                        <div className='mealTitle'>
+                          {meal}
+                        </div>
+                        <div className='mealContents'>
+                          <button className="edit-this-meal-btn" 
+                          onClick={()=> {
+                            setShowEditModal(true);
+                            setEditWhichDay(row.Day);
+                            setEditWhichMeal(meal);
+                            setSelectedIndex(index);
+                            }}>
+                            {row[meal]} <MdEdit color="gray" fontSize="80%"/>
+                          </button>
+                        </div>
                       </div>
-                      <div className='mealContents'>
-                        <button className="edit-this-meal-btn" 
-                        onClick={()=> {
-                          setShowModal(true);
-                          setEditWhichDay(row.Day);
-                          setEditWhichMeal(meal);
-                          setSelectedIndex(index);
-                          }}>
-                          {row[meal]} <MdEdit color="gray" fontSize="80%"/>
-                        </button>
-                      </div>
-                    </div>
-                    )
-                  })}
+                      )
+                    })}
+                </div>
               </div>
+              )
+          })}
+          {/* Edit Meal modal */}
+          <Modal 
+            open={showEditModal} 
+            onClose={() => setShowEditModal(false)}
+            // blockScroll={false}
+            styles={{
+              modal: {
+                bottom: 'auto',
+                top: 'auto',
+                transform: 'translateY(-50%)',
+                position: 'fixed',
+                width: '100%', // You might adjust this as needed
+                maxWidth: '100%', // Prevents modal from exceeding the screen width
+                minHeight: '1%', // Adjust based on your content
+                height: 'auto',
+                left: 0,
+                right: 0,
+                margin: 'auto'
+              },
+              overlay: {
+                height: '100vh', // Ensures the overlay covers full screen height
+                overflowY: 'auto' // Allows scrolling if content is taller than the screen
+              }
+            }}
+            // center
+          >
+            <div className='support-text'>Edit {editWhichMeal} plan for {editWhichDay}</div>
+
+            <div className="search-container">
+              {seachResults.length > 0 && (
+                <ul style={{ listStyleType: "none", padding: 0 }}>
+                  {seachResults.map((item, index) => (
+                    <li 
+                    className="search-items" 
+                    key={index} 
+                    style={{ cursor: "pointer" }}
+                    onClick={()=>appendFoodItem(item)}
+                    >
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
-            )
-        })}
-        <Modal 
-          open={showModal} 
-          onClose={() => setShowModal(false)}
-          // blockScroll={false}
-          styles={{
-            modal: {
-              bottom: 'auto',
-              top: 'auto',
-              transform: 'translateY(-50%)',
-              position: 'fixed',
-              width: '100%', // You might adjust this as needed
-              maxWidth: '100%', // Prevents modal from exceeding the screen width
-              minHeight: '1%', // Adjust based on your content
-              height: 'auto',
-              left: 0,
-              right: 0,
-              margin: 'auto'
-            },
-            overlay: {
-              height: '100vh', // Ensures the overlay covers full screen height
-              overflowY: 'auto' // Allows scrolling if content is taller than the screen
-            }
-          }}
-          // center
-        >
-          <div className='support-text'>Edit {editWhichMeal} plan for {editWhichDay}</div>
 
-          <div className="search-container">
-            {seachResults.length > 0 && (
-              <ul style={{ listStyleType: "none", padding: 0 }}>
-                {seachResults.map((item, index) => (
-                  <li 
-                  className="search-items" 
-                  key={index} 
-                  style={{ cursor: "pointer" }}
-                  onClick={()=>appendFoodItem(item)}
-                  >
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
+            <div className='edit-meal-container'>
+              <textarea
+                className="edit-meal-area"
+                ref={inputRef}
+                onFocus={scrollToInput}
+                value={userMenu[selectedIndex][editWhichMeal]}
+                onChange={(e) => handleChange(e.target.value)}
+                onInput={handleInput}
+              />
+              <button 
+                className="update-text-btn"
+                onClick={() => setShowEditModal(false)}>
+                <IoSendSharp fontSize="300%"/>
+              </button>
+            </div>
+          </Modal>
+          {/* Login Modal */}
+          <Modal
+            open={showLoginModal} 
+            onClose={() => setShowLoginModal(false)}
+            styles={{
+              modal: {
+                bottom: 'auto',
+                top: 'auto',
+                transform: 'translateY(-50%)',
+                position: 'fixed',
+                width: '100%', // You might adjust this as needed
+                maxWidth: '100%', // Prevents modal from exceeding the screen width
+                minHeight: '1%', // Adjust based on your content
+                height: 'auto',
+                left: 0,
+                right: 0,
+                margin: 'auto'
+              },
+              overlay: {
+                height: '100vh', // Ensures the overlay covers full screen height
+                overflowY: 'auto' // Allows scrolling if content is taller than the screen
+              }
+            }}
+          >
+            <div style={{color:"black"}}>
+              <LoginElement />
+            </div>
+          </Modal>
 
-          <div className='edit-meal-container'>
-            <textarea
-              className="edit-meal-area"
-              ref={inputRef}
-              onFocus={scrollToInput}
-              value={userMenu[selectedIndex][editWhichMeal]}
-              onChange={(e) => handleChange(e.target.value)}
-              onInput={handleInput}
-            />
-            <button 
-              className="update-text-btn"
-              onClick={() => setShowModal(false)}>
-              <IoSendSharp fontSize="300%"/>
-            </button>
-          </div>
-        </Modal>
-      </div>
+        </div>
+      </>
     )
 }
