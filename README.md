@@ -41,6 +41,7 @@
             - [X] Create modality
             - [X] Basic Page Done
             - [X] Login button, modal
+            - [ ] Add API to login flow to get or retrieve
       - [ ] View alternate
       - [ ] Redirection based on resolution
 - [ ] Add user greetings on the page

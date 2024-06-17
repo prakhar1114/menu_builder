@@ -78,7 +78,7 @@ function LoginElement() {
     return (
       // <div className="login">
       <div>
-        <h1>Logged in as {session.user.email}</h1>
+        <h1>Logged in as {session.user.user_metadata.full_name}</h1>
         <button className="done-btn" onClick={onLogout}>
           Sign Out
         </button>
