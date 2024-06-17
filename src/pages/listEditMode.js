@@ -9,7 +9,9 @@ import { Modal } from 'react-responsive-modal';
 import { fuse } from "../utils";
 import { MdEdit, MdSave } from "react-icons/md";
 import { IoSendSharp } from "react-icons/io5";
-import { RxDropdownMenu } from "react-icons/rx";
+// import { MdOutlineArrowDropDownCircle } from "react-icons/rx";
+// import { MdOutlineArrowDropDownCircle } from "react-icons/md";
+import { IoMdArrowDropdown } from "react-icons/io";
 import { AuthContextMain } from "../App";
 import getBaseUrl from "../utils";
 import { useCheckLogin } from "../loginComponent";
@@ -165,7 +167,7 @@ export default MealCard;
         {/* <div className="top-bar"> */}
         <h2> Plan you Weekly Menu</h2>
         <div ref={dropdownRef}>
-          <button className="fixed-dropdown" onClick={()=> setDDIsOpen(!ddisOpen)}><RxDropdownMenu  fontSize="400%" color="white"/></button>
+          <button className="fixed-dropdown" onClick={()=> setDDIsOpen(!ddisOpen)}><IoMdArrowDropdown  fontSize="400%" color="white"/></button>
           {ddisOpen && (
                   <ul className="dropdown-content">
                       <li onClick={() => setShowLoginModal(true)}>{isLoggedIn ? "Logout" : "Login"}</li>
