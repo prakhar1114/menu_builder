@@ -64,7 +64,8 @@ function LoginElement() {
           variables: {
             default: {
               colors: {
-                inputText: 'white',
+                inputText: 'black',
+                inputBackground: 'white',
               },
             },
           }
