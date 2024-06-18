@@ -166,7 +166,7 @@ export default MealCard;
     return (
       <>
         {/* <div className="top-bar"> */}
-        <h2> Plan you Weekly Menu</h2>
+        <h2> Let's do meal planning!</h2>
         <div ref={dropdownRef}>
           <button className="fixed-dropdown" onClick={()=> setDDIsOpen(!ddisOpen)}><IoMdArrowDropdown  fontSize="400%" color="white"/></button>
           {ddisOpen && (
