@@ -106,6 +106,7 @@ export default MealCard;
 
     const saveToDB = async () => {
       const updated_menu = remove_extra_commas(userMenu);
+      setUserMenu(updated_menu);
       if (isLoggedIn) {
         console.log("Trying to Save to DB");
         InsertUserMenu(updated_menu).then(response => {
