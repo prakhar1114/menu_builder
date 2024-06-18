@@ -67,6 +67,9 @@ function LoginElement() {
                 inputText: 'black',
                 inputBackground: 'white',
               },
+              fontSizes: {
+                baseInputSize: '16px',
+              }
             },
           }
         }}
@@ -79,7 +82,7 @@ function LoginElement() {
     return (
       // <div className="login">
       <div>
-        <h1>Logged in as {session.user.user_metadata.full_name || session.user.email.split("@")[0]}</h1>
+        <h2>Logged in as {session.user.user_metadata.full_name || session.user.email.split("@")[0]}</h2>
         <button className="done-btn" onClick={onLogout}>
           Sign Out
         </button>
