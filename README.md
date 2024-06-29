@@ -45,6 +45,12 @@
       - [ ] View alternate
       - [ ] Redirection based on resolution
 - [ ] Add user greetings on the page
+- [ ] Generate User menu chat
+      - [ ] Enforce last question of the type button which will call terminal function in chat.js
+      - [ ] Convert chat.js to accept props
+      - [ ] Make it more engaging with more buttons for simple conext questions
+      - [ ] Allow for callables in functions, for example sugegsting top 5 meal items right there (multi integration with chatgpt)
+      - [ ] Add animation in chat
 
 ## Guidelines
 

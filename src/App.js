@@ -14,6 +14,7 @@ import TableView from "./pages/tableView";
 import { createClient } from "@supabase/supabase-js";
 import StoreAuth from "./AuthStore";
 import ListMode from "./pages/listEditMode";
+import Chat from "./pages/chat"
 
 
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
@@ -53,7 +54,7 @@ function App() {
               <Route path="/" element={<TableView />}/>
             )
             }
-
+            <Route path="/chat" element={<Chat />}/>
             {/* <Route path="/" element={<Login />}/>
             <Route path="/success" element={<Success />} />
             <Route path="/menu" element={<MenuBoardOffline />} /> */}
