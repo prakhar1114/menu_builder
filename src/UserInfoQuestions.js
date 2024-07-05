@@ -1,3 +1,10 @@
+import { generateFullMealPlan } from './components/open_ai';
+import { useNavigate } from "react-router-dom";
+
+
+const openapi_key = process.env.OPENAI_API_KEY;
+
+
 // Rules for questions should always end with buttons ResponseType which should take to next page or action
 const questions = [
     {
@@ -49,9 +56,23 @@ const questions = [
 ]
 
 const generateInitialMenu = (user_response) => {
-    console.log("Add routine to generate menu from chat gpt and populate in menu maker list");
-    console.log(user_response);
+    // const navigate = useNavigate();
+    const user_data = user_response.map((question)=> 
+        {
+            return {
+                "Question": question.Question,
+                "Response": question.Response,
+            }
+        }
+    )
+    console.log(user_data);
+
+    const meal_plan = generateFullMealPlan(user_data);
+
+    // navigate('/editable-list-mode')
+
+    return meal_plan;
+
 } 
 
-// questions, terminal function
 export {questions, generateInitialMenu};
