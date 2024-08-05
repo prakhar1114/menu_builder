@@ -164,7 +164,7 @@ export default MealCard;
         }, [isLoggedIn]);
 
     return (
-      <>
+      <div id="listPage">
         {/* <div className="top-bar"> */}
         <h2> Let's do meal planning!</h2>
         <div ref={dropdownRef}>
@@ -177,7 +177,10 @@ export default MealCard;
               )}
         </div>
         <div className="week-food-data">
-          {userMenu.map((row, index) => {
+          {
+          // userMenu.map((row, index) => {
+            Object.keys(weekdayMapping).map((currentDay, index) => {
+            const row = userMenu.find(row => row.Day.toLowerCase() === currentDay.toLowerCase());
             return (
               <div className = 'daymealCard'>
                 <div className = 'day'>
@@ -301,6 +304,6 @@ export default MealCard;
 
         </div>
         <button className="fixed-save" onClick={saveToDB}>Save <MdSave  fontSize="100%" color="white"/></button>
-      </>
+      </div>
     )
 }

@@ -138,7 +138,7 @@ input[type="text"] {
   font-size: inherit; /* Inherits font-size from the table */
   text-align: center; /* Center text inside the input */
   background-color: transparent; /* Maintains the cell's background */
-  color: inherit; /* Inherits text color from the table */
+  color: black;
   border-radius: 4px; /* Optional: adds slight rounding to inputs */
   text-overflow:  ellipsis;
 }
@@ -150,7 +150,7 @@ input[type="text"] {
   font-size: inherit; /* Inherits font-size from the table */
   text-align: center; /* Center text inside the input */
   background-color: transparent; /* Maintains the cell's background */
-  color: inherit; /* Inherits text color from the table */
+  color: black;
   border-radius: 4px; /* Optional: adds slight rounding to inputs */
 }
 
@@ -182,4 +182,8 @@ input[type="text"] {
   left: 0;
   right: 0;
   bottom: 0;
+}
+
+td {
+  color: black;
 }

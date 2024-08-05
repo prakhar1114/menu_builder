@@ -18,7 +18,8 @@ function getWeekMapping() {
   // Loop through each day of the week
   for (let i = 0; i < 7; i++) {
     // Calculate the date offset from today to the current day of the loop
-    const offset = i - dayOfWeek + (dayOfWeek === 0 ? -6 : 1);
+    // const offset = i - dayOfWeek + (dayOfWeek === 0 ? -6 : 1);
+    const offset = i;
     const dayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + offset);
 
     // Format the date and day name

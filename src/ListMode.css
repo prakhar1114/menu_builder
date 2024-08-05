@@ -1,13 +1,18 @@
-* {
-    text-align: inherit;
-    /* margin-left: 5px; */
+/* body, body * {
+    text-align: left;
     border-radius: 5px;
     color: white;
-}
+} */
 
 .week-food-data {
     display: flex;
     flex-direction: column;
+}
+
+.listPage * {
+    text-align: left;
+    border-radius: 5px;
+    color: white;
 }
 
 
