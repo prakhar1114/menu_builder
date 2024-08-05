@@ -5,12 +5,12 @@ const assistantId = process.env.REACT_APP_MEAL_PLAN_ASSISTANT;
 const openapi_key = process.env.REACT_APP_OPENAI_API_KEY;
 const project_id = process.env.REACT_APP_PROJECT_ID;
 const org_id = process.env.REACT_APP_ORGANIZATION_ID;
-const openai = new OpenAI({
-    apiKey: openapi_key,
-    organization: org_id,
-    project: project_id,
-    dangerouslyAllowBrowser: true
-});
+// const openai = new OpenAI({
+//     apiKey: openapi_key,
+//     organization: org_id,
+//     project: project_id,
+//     dangerouslyAllowBrowser: true
+// });
 
 
 const getFirstResponse = async (user_responses, thread) => {
