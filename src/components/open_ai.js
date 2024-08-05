@@ -5,6 +5,7 @@ const assistantId = process.env.REACT_APP_MEAL_PLAN_ASSISTANT;
 const openapi_key = process.env.REACT_APP_OPENAI_API_KEY;
 const project_id = process.env.REACT_APP_PROJECT_ID;
 const org_id = process.env.REACT_APP_ORGANIZATION_ID;
+// TODO: uncomment
 // const openai = new OpenAI({
 //     apiKey: openapi_key,
 //     organization: org_id,
@@ -14,82 +15,82 @@ const org_id = process.env.REACT_APP_ORGANIZATION_ID;
 
 
 const getFirstResponse = async (user_responses, thread) => {
-    try {
-        const message = await openai.beta.threads.messages.create(thread.id, {
-            role: "user",
-            content: `${user_responses}`,
-        });
-        const run = await openai.beta.threads.runs.createAndPoll(thread.id, {
-            assistant_id: assistantId,
-        });
+    // try {
+    //     const message = await openai.beta.threads.messages.create(thread.id, {
+    //         role: "user",
+    //         content: `${user_responses}`,
+    //     });
+    //     const run = await openai.beta.threads.runs.createAndPoll(thread.id, {
+    //         assistant_id: assistantId,
+    //     });
     
-        const threadMessages = await openai.beta.threads.messages.list(thread.id);
+    //     const threadMessages = await openai.beta.threads.messages.list(thread.id);
 
-        if (threadMessages.data.length > 0 && threadMessages.data[0].content[0].text) {
-            console.log("New message");
-            console.log(threadMessages.data[0].content[0].text.value);
-            return threadMessages.data[0].content[0].text.value;
-        } else {
-            console.error("No response found in the thread.");
-            return null;
-        }
+    //     if (threadMessages.data.length > 0 && threadMessages.data[0].content[0].text) {
+    //         console.log("New message");
+    //         console.log(threadMessages.data[0].content[0].text.value);
+    //         return threadMessages.data[0].content[0].text.value;
+    //     } else {
+    //         console.error("No response found in the thread.");
+    //         return null;
+    //     }
 
-    } catch (error) {
-        console.error("An error occurred: ", error);
-        return null;
-    }
+    // } catch (error) {
+    //     console.error("An error occurred: ", error);
+    //     return null;
+    // }
 }
 
 const generateFullMealPlan = async (user_responses) => {
 
-    const thread = await openai.beta.threads.create();
+    // const thread = await openai.beta.threads.create();
 
-    let response = await getFirstResponse(user_responses, thread);
-    let count = 0
-    let response_valid = false
+    // let response = await getFirstResponse(user_responses, thread);
+    // let count = 0
+    // let response_valid = false
 
-    while (response_valid || count < 3) {
-        const { isValid, reason } = isValidMealSchedule(response);
-        response_valid = isValid;
-        count++;
-        if (!isValid) {
-            console.log(reason);
-            await openai.beta.threads.messages.create(thread.id, {
-                role: "user",
-                content: reason,
-            });
-            response = await createRunAndGetResponse(thread);
+    // while (response_valid || count < 3) {
+    //     const { isValid, reason } = isValidMealSchedule(response);
+    //     response_valid = isValid;
+    //     count++;
+    //     if (!isValid) {
+    //         console.log(reason);
+    //         await openai.beta.threads.messages.create(thread.id, {
+    //             role: "user",
+    //             content: reason,
+    //         });
+    //         response = await createRunAndGetResponse(thread);
             
-        } else {
-            console.log("valid meal schedule")
-            break;
-        }
-    }
-    return response
+    //     } else {
+    //         console.log("valid meal schedule")
+    //         break;
+    //     }
+    // }
+    // return response
 
 }
 
 async function createRunAndGetResponse(thread) {
-    try {
-        const run = await openai.beta.threads.runs.createAndPoll(thread.id, {
-            assistant_id: assistantId,
-        }); 
+    // try {
+    //     const run = await openai.beta.threads.runs.createAndPoll(thread.id, {
+    //         assistant_id: assistantId,
+    //     }); 
 
-        const threadMessages = await openai.beta.threads.messages.list(thread.id);
+    //     const threadMessages = await openai.beta.threads.messages.list(thread.id);
 
-        if (threadMessages.data.length > 0 && threadMessages.data[0].content[0].text) {
-            console.log("New message");
-            console.log(threadMessages.data[0].content[0].text.value);
-            return threadMessages.data[0].content[0].text.value;
-        } else {
-            console.error("No response found in the thread.");
-            return null;
-        }
+    //     if (threadMessages.data.length > 0 && threadMessages.data[0].content[0].text) {
+    //         console.log("New message");
+    //         console.log(threadMessages.data[0].content[0].text.value);
+    //         return threadMessages.data[0].content[0].text.value;
+    //     } else {
+    //         console.error("No response found in the thread.");
+    //         return null;
+    //     }
 
-    } catch (error) {
-        console.error("An error occurred: ", error);
-        return null;
-    }
+    // } catch (error) {
+    //     console.error("An error occurred: ", error);
+    //     return null;
+    // }
 
 }
 
